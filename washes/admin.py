@@ -6,11 +6,14 @@ from django.contrib import admin
 from .models import (
     CarWash,
     StaffProfile,
-    WashService,
     Customer,
     Vehicle,
+    WashService,
     WashJob,
+    PlatformPayment,
 )
+   
+
 
 
 # =========================================================
@@ -155,4 +158,43 @@ class WashJobAdmin(admin.ModelAdmin):
         "vehicle__registration_number",
         "customer__name",
         "customer__phone_number",
+    )
+
+    # =========================================================
+# PLATFORM PAYMENT ADMIN
+# =========================================================
+
+@admin.register(PlatformPayment)
+class PlatformPaymentAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "car_wash",
+        "amount",
+        "billing_month",
+        "billing_year",
+        "payment_method",
+        "reference",
+        "paid_at",
+    )
+
+    list_filter = (
+        "billing_year",
+        "billing_month",
+        "payment_method",
+        "car_wash",
+    )
+
+    search_fields = (
+        "car_wash__name",
+        "reference",
+    )
+
+    readonly_fields = (
+        "paid_at",
+    )
+
+    ordering = (
+        "-billing_year",
+        "-billing_month",
+        "-paid_at",
     )

@@ -365,54 +365,73 @@
                         </div>
 
 
-                        <!-- =====================================
-                             EDVANCE TECH USAGE BILLING
-                        ====================================== -->
-
                         <div class="billing-summary">
 
-                            <div>
+    <div>
 
-                                <span>
-                                    Completed This Month
-                                </span>
+        <span>
+            Completed This Month
+        </span>
 
-                                <strong>
-                                    {{ item.monthly_completed_jobs }}
-                                </strong>
+        <strong>
+            {{ item.monthly_completed_jobs }}
+        </strong>
 
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Fee Per Completed Wash
-                                </span>
-
-                                <strong>
-                                    R{{ item.fee_per_wash|floatformat:2 }}
-                                </strong>
-
-                            </div>
+    </div>
 
 
-                            <div>
+    <div>
 
-                                <span>
-                                    Platform Fee Due
-                                </span>
+        <span>
+            Fee Per Completed Wash
+        </span>
 
-                                <strong>
-                                    R{{ item.platform_fee_due|floatformat:2 }}
-                                </strong>
+        <strong>
+            R{{ item.fee_per_wash|floatformat:2 }}
+        </strong>
 
-                            </div>
+    </div>
 
-                        </div>
 
-                    </article>
+    <div>
 
+        <span>
+            Platform Fees Generated
+        </span>
+
+        <strong>
+            R{{ item.platform_fee_generated|floatformat:2 }}
+        </strong>
+
+    </div>
+
+
+    <div>
+
+        <span>
+            Paid to Edvance Tech
+        </span>
+
+        <strong>
+            R{{ item.platform_fee_paid|floatformat:2 }}
+        </strong>
+
+    </div>
+
+
+    <div>
+
+        <span>
+            Platform Fee Due
+        </span>
+
+        <strong>
+            R{{ item.platform_fee_due|floatformat:2 }}
+        </strong>
+
+    </div>
+
+</div>
 
                 {% empty %}
 

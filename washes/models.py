@@ -326,4 +326,59 @@ class WashJob(models.Model):
             f"{self.vehicle.registration_number}"
         )
 
+    # =========================================================
+# PLATFORM PAYMENT
+# Payments made by car washes to Edvance Tech
+# =========================================================
+
+class PlatformPayment(models.Model):
+
+    PAYMENT_METHOD_CHOICES = [
+        ("eft", "EFT"),
+        ("cash", "Cash"),
+        ("card", "Card"),
+        ("other", "Other"),
+    ]
+
+    car_wash = models.ForeignKey(
+        CarWash,
+        on_delete=models.CASCADE,
+        related_name="platform_payments"
+    )
+
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+
+    billing_year = models.PositiveIntegerField()
+
+    billing_month = models.PositiveSmallIntegerField()
+
+    payment_method = models.CharField(
+        max_length=20,
+        choices=PAYMENT_METHOD_CHOICES,
+        default="eft"
+    )
+
+    reference = models.CharField(
+        max_length=100,
+        blank=True
+    )
+
+    notes = models.TextField(
+        blank=True
+    )
+
+    paid_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return (
+            f"{self.car_wash.name} - "
+            f"{self.billing_year}/{self.billing_month} - "
+            f"R{self.amount}"
+        )
+
  

@@ -5,12 +5,15 @@ from django.utils import timezone
 from django.db.models import Sum
 
 from .models import (
-    StaffProfile,
     CarWash,
+    StaffProfile,
     Customer,
     Vehicle,
+    WashService,
     WashJob,
+    PlatformPayment,
 )
+
 
 from .forms import VehicleRegistrationForm
 
@@ -722,11 +725,6 @@ def daily_report(request):
         "washes/daily_report.html",
         context
     )
-
-# =========================================================
-# PLATFORM MONITORING
-# =========================================================
-
 # =========================================================
 # PLATFORM MONITORING
 # =========================================================
@@ -772,19 +770,39 @@ def platform_monitoring(request):
 
     monthly_completed_count = monthly_completed_jobs.count()
 
-    # R5 for every completed and paid wash
+    # =====================================================
+    # PLATFORM FEES GENERATED
+    # =====================================================
+
     expected_invoice_revenue = (
-        monthly_completed_count * PLATFORM_FEE_PER_WASH
+        monthly_completed_count
+        * PLATFORM_FEE_PER_WASH
     )
 
-    # For now, accumulated usage is treated as outstanding
-    # until we add monthly invoice payment tracking.
-    paid_invoice_revenue = 0
+    # =====================================================
+    # PAYMENTS RECEIVED BY EDVANCE TECH THIS MONTH
+    # =====================================================
 
-    outstanding_invoice_revenue = (
+    paid_invoice_revenue = (
+        PlatformPayment.objects.filter(
+            billing_year=today.year,
+            billing_month=today.month,
+        ).aggregate(
+            total=Sum("amount")
+        )["total"] or 0
+    )
+
+    # =====================================================
+    # OUTSTANDING PLATFORM FEES
+    # =====================================================
+
+    outstanding_invoice_revenue = max(
         expected_invoice_revenue
+        - paid_invoice_revenue,
+        0
     )
 
+     
     # =====================================================
     # TODAY'S JOBS ACROSS ALL CAR WASHES
     # =====================================================
@@ -877,11 +895,30 @@ def platform_monitoring(request):
             ).count()
         )
 
-        platform_fee_due = (
+                # =================================================
+        # PLATFORM FEES FOR THIS CAR WASH
+        # =================================================
+
+        platform_fee_generated = (
             monthly_completed_for_car_wash
             * PLATFORM_FEE_PER_WASH
         )
 
+        platform_fee_paid = (
+            PlatformPayment.objects.filter(
+                car_wash=car_wash,
+                billing_year=today.year,
+                billing_month=today.month,
+            ).aggregate(
+                total=Sum("amount")
+            )["total"] or 0
+        )
+
+        platform_fee_due = max(
+            platform_fee_generated
+            - platform_fee_paid,
+            0
+        )
         # =================================================
         # DATA SENT TO PLATFORM DASHBOARD
         # =================================================
@@ -901,9 +938,11 @@ def platform_monitoring(request):
             # Staff
             "staff_count": staff_count,
 
-            # Edvance Tech billing
+                     # Edvance Tech billing
             "monthly_completed_jobs": monthly_completed_for_car_wash,
             "fee_per_wash": PLATFORM_FEE_PER_WASH,
+            "platform_fee_generated": platform_fee_generated,
+            "platform_fee_paid": platform_fee_paid,
             "platform_fee_due": platform_fee_due,
         })
 
