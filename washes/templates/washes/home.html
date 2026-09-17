@@ -13,10 +13,59 @@
 
     <title>CarWash Connect</title>
 
+    <!-- MAIN STYLESHEET -->
     <link
         rel="stylesheet"
         href="{% static 'washes/css/style.css' %}"
     >
+
+    <!-- WEB APP MANIFEST -->
+    <link
+        rel="manifest"
+        href="{% static 'washes/manifest.json' %}"
+    >
+
+    <!-- BROWSER / ANDROID ICON -->
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="{% static 'washes/images/carwash-icon-192.png' %}"
+    >
+
+    <!-- APPLE HOME SCREEN ICON -->
+    <link
+        rel="apple-touch-icon"
+        sizes="192x192"
+        href="{% static 'washes/images/carwash-icon-192.png' %}"
+    >
+
+    <!-- MOBILE APP APPEARANCE -->
+    <meta
+        name="theme-color"
+        content="#0b1f33"
+    >
+
+    <meta
+        name="mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="default"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="CarWash Connect"
+    >
+
 </head>
 
 <body class="home-page">
