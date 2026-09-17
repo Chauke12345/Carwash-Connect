@@ -755,43 +755,34 @@ def platform_monitoring(request):
         is_active=True
     ).count()
 
-    # =====================================================
-    # EDVANCE TECH BILLING
+        # =====================================================
+    # EDVANCE TECH BILLING - R5 PER COMPLETED WASH
     # =====================================================
 
+    PLATFORM_FEE_PER_WASH = 5
+
+    # Paid and completed washes for the current month
+    monthly_completed_jobs = WashJob.objects.filter(
+        created_at__year=today.year,
+        created_at__month=today.month,
+        status="collected",
+        payment_status="paid",
+        car_wash__is_active=True,
+    )
+
+    monthly_completed_count = monthly_completed_jobs.count()
+
+    # R5 for every completed and paid wash
     expected_invoice_revenue = (
-        car_washes
-        .filter(
-            is_active=True
-        )
-        .aggregate(
-            total=Sum("monthly_fee")
-        )["total"] or 0
+        monthly_completed_count * PLATFORM_FEE_PER_WASH
     )
 
-    paid_invoice_revenue = (
-        car_washes
-        .filter(
-            is_active=True,
-            billing_status="paid"
-        )
-        .aggregate(
-            total=Sum("monthly_fee")
-        )["total"] or 0
-    )
+    # For now, accumulated usage is treated as outstanding
+    # until we add monthly invoice payment tracking.
+    paid_invoice_revenue = 0
 
     outstanding_invoice_revenue = (
-        car_washes
-        .filter(
-            is_active=True,
-            billing_status__in=[
-                "pending",
-                "overdue",
-            ]
-        )
-        .aggregate(
-            total=Sum("monthly_fee")
-        )["total"] or 0
+        expected_invoice_revenue
     )
 
     # =====================================================
@@ -817,6 +808,7 @@ def platform_monitoring(request):
         payment_status="paid"
     )
 
+
     # =====================================================
     # CAR WASH TRANSACTION VALUE
     # =====================================================
@@ -827,13 +819,17 @@ def platform_monitoring(request):
         )["total"] or 0
     )
 
-    # =====================================================
+        # =====================================================
     # INDIVIDUAL CAR WASH DATA
     # =====================================================
 
     car_wash_data = []
 
     for car_wash in car_washes:
+
+        # =================================================
+        # TODAY'S OPERATIONS FOR THIS CAR WASH
+        # =================================================
 
         wash_jobs = today_jobs.filter(
             car_wash=car_wash
@@ -854,37 +850,64 @@ def platform_monitoring(request):
             payment_status="paid"
         )
 
+        # Today's car wash transaction value
         transaction_value = (
             wash_paid.aggregate(
                 total=Sum("amount")
             )["total"] or 0
         )
 
+        # =================================================
+        # ACTIVE STAFF
+        # =================================================
+
         staff_count = StaffProfile.objects.filter(
             car_wash=car_wash,
             is_active=True
         ).count()
 
+        # =================================================
+        # EDVANCE TECH MONTHLY BILLING
+        # R5 PER COMPLETED + PAID WASH
+        # =================================================
+
+        monthly_completed_for_car_wash = (
+            monthly_completed_jobs.filter(
+                car_wash=car_wash
+            ).count()
+        )
+
+        platform_fee_due = (
+            monthly_completed_for_car_wash
+            * PLATFORM_FEE_PER_WASH
+        )
+
+        # =================================================
+        # DATA SENT TO PLATFORM DASHBOARD
+        # =================================================
+
         car_wash_data.append({
 
             "car_wash": car_wash,
 
-            # Operations
+            # Today's operations
             "total_jobs": wash_jobs.count(),
             "active_jobs": wash_active.count(),
             "completed_jobs": wash_completed.count(),
 
-            # Car wash business revenue
+            # Today's car wash revenue
             "transaction_value": transaction_value,
 
             # Staff
             "staff_count": staff_count,
 
             # Edvance Tech billing
-            "monthly_fee": car_wash.monthly_fee,
-            "billing_status": car_wash.billing_status,
+            "monthly_completed_jobs": monthly_completed_for_car_wash,
+            "fee_per_wash": PLATFORM_FEE_PER_WASH,
+            "platform_fee_due": platform_fee_due,
         })
 
+    
     # =====================================================
     # CONTEXT
     # =====================================================

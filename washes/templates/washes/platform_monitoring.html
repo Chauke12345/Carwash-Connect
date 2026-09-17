@@ -74,8 +74,8 @@
                     </p>
 
                     <p class="form-description">
-                        Monitor connected car washes and monthly
-                        platform billing.
+                        Monitor connected car washes, daily activity,
+                        and monthly platform usage billing.
                     </p>
 
                 </div>
@@ -86,7 +86,7 @@
 
 
         <!-- =================================================
-             PLATFORM ACTIVITY
+             PLATFORM ACTIVITY - TODAY
         ================================================== -->
 
         <section class="dashboard-section">
@@ -190,7 +190,8 @@
                     <h2>Edvance Tech Billing</h2>
 
                     <p class="form-description">
-                        Monthly platform fees from connected car washes.
+                        R5 platform fee for every completed and paid
+                        wash during the current month.
                     </p>
 
                 </div>
@@ -200,10 +201,12 @@
 
             <div class="revenue-grid">
 
+                <!-- TOTAL PLATFORM FEES GENERATED -->
+
                 <div class="revenue-card">
 
                     <span>
-                        Expected Invoices
+                        Platform Fees Earned
                     </span>
 
                     <strong>
@@ -213,10 +216,12 @@
                 </div>
 
 
+                <!-- AMOUNT PAID TO EDVANCE TECH -->
+
                 <div class="revenue-card">
 
                     <span>
-                        Paid
+                        Paid to Edvance Tech
                     </span>
 
                     <strong>
@@ -226,10 +231,12 @@
                 </div>
 
 
+                <!-- CURRENT AMOUNT DUE -->
+
                 <div class="revenue-card">
 
                     <span>
-                        Outstanding
+                        Platform Fees Due
                     </span>
 
                     <strong>
@@ -256,8 +263,8 @@
                     <h2>Car Wash Billing</h2>
 
                     <p class="form-description">
-                        Monthly invoice summary for each connected
-                        car wash.
+                        Monthly usage billing based on completed
+                        washes for each connected car wash.
                     </p>
 
                 </div>
@@ -271,7 +278,9 @@
 
                     <article class="monitoring-card">
 
-                        <!-- BUSINESS -->
+                        <!-- =====================================
+                             CAR WASH INFORMATION
+                        ====================================== -->
 
                         <div class="monitoring-card-header">
 
@@ -305,7 +314,9 @@
                         </div>
 
 
-                        <!-- ACTIVITY -->
+                        <!-- =====================================
+                             TODAY'S ACTIVITY
+                        ====================================== -->
 
                         <div class="monitoring-stats">
 
@@ -325,7 +336,7 @@
                             <div>
 
                                 <span>
-                                    Completed
+                                    Completed Today
                                 </span>
 
                                 <strong>
@@ -337,7 +348,9 @@
                         </div>
 
 
-                        <!-- BUSINESS TRANSACTION VALUE -->
+                        <!-- =====================================
+                             CAR WASH BUSINESS REVENUE
+                        ====================================== -->
 
                         <div class="monitoring-revenue">
 
@@ -352,18 +365,20 @@
                         </div>
 
 
-                        <!-- EDVANCE BILLING -->
+                        <!-- =====================================
+                             EDVANCE TECH USAGE BILLING
+                        ====================================== -->
 
                         <div class="billing-summary">
 
                             <div>
 
                                 <span>
-                                    Monthly Platform Fee
+                                    Completed This Month
                                 </span>
 
                                 <strong>
-                                    R{{ item.monthly_fee|floatformat:2 }}
+                                    {{ item.monthly_completed_jobs }}
                                 </strong>
 
                             </div>
@@ -372,28 +387,25 @@
                             <div>
 
                                 <span>
-                                    Invoice Status
+                                    Fee Per Completed Wash
                                 </span>
 
-                                {% if item.billing_status == "paid" %}
+                                <strong>
+                                    R{{ item.fee_per_wash|floatformat:2 }}
+                                </strong>
 
-                                    <strong class="billing-paid">
-                                        Paid
-                                    </strong>
+                            </div>
 
-                                {% elif item.billing_status == "overdue" %}
 
-                                    <strong class="billing-overdue">
-                                        Overdue
-                                    </strong>
+                            <div>
 
-                                {% else %}
+                                <span>
+                                    Platform Fee Due
+                                </span>
 
-                                    <strong class="billing-pending">
-                                        Pending
-                                    </strong>
-
-                                {% endif %}
+                                <strong>
+                                    R{{ item.platform_fee_due|floatformat:2 }}
+                                </strong>
 
                             </div>
 
