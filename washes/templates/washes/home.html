@@ -1,0 +1,293 @@
+﻿{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CarWash Connect</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'washes/css/style.css' %}"
+    >
+</head>
+
+<body class="home-page">
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<header class="home-header">
+
+    <div class="home-nav">
+
+        <!-- CARWASH CONNECT BRAND -->
+        <a
+            href="{% url 'home' %}"
+            class="home-logo home-brand"
+        >
+            <img
+    src="{% static 'washes/images/carwash-connect-logo.png' %}"
+    alt="CarWash Connect"
+    class="home-brand-icon"
+>
+        </a>
+
+
+        <!-- LOGIN ACTIONS -->
+        <div class="home-nav-actions">
+
+            <a
+                href="{% url 'staff_login' %}"
+                class="btn btn-primary"
+            >
+                Staff Login
+            </a>
+
+            <a
+                href="{% url 'platform_login' %}"
+                class="owner-login-icon"
+                title="Platform Admin Login"
+                aria-label="Platform Admin Login"
+            >
+                🏠
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <main>
+
+        <section class="home-hero">
+
+            <div class="hero-content">
+
+                <span class="hero-label">
+                    Car Wash Management Platform
+                </span>
+
+                <h1>
+                    Manage Your Car Wash
+                    From One Simple Dashboard
+                </h1>
+
+                <p>
+                    Register vehicles, manage the live wash queue,
+                    notify customers when their vehicles are ready,
+                    process payments and track daily revenue.
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="{% url 'staff_login' %}"
+                        class="btn btn-primary hero-button"
+                    >
+                        Staff Login
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- DASHBOARD PREVIEW -->
+
+            <div class="hero-preview">
+
+                <div class="preview-header">
+
+                    <div>
+                        <strong>Today's Operations</strong>
+                        <span>Live car wash overview</span>
+                    </div>
+
+                    <span class="preview-live">&#9679; LIVE</span>
+
+                </div>
+
+
+                <div class="preview-stats">
+
+                    <div>
+                        <strong>4</strong>
+                        <span>Waiting</span>
+                    </div>
+
+                    <div>
+                        <strong>2</strong>
+                        <span>Washing</span>
+                    </div>
+
+                    <div>
+                        <strong>1</strong>
+                        <span>Ready</span>
+                    </div>
+
+                </div>
+
+
+                <div class="preview-job">
+
+                    <div>
+                        <strong>GP 458 921</strong>
+                        <span>Toyota Corolla</span>
+                    </div>
+
+                    <span class="status-badge status-washing">
+                        Washing
+                    </span>
+
+                </div>
+
+
+                <div class="preview-job">
+
+                    <div>
+                        <strong>ND 123 456</strong>
+                        <span>VW Polo</span>
+                    </div>
+
+                    <span class="status-badge status-ready">
+                        Ready
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FEATURES
+        ================================================== -->
+
+        <section class="home-features">
+
+            <div class="features-heading">
+
+                <span>Everything in one place</span>
+
+                <h2>
+                    Simple tools for daily car wash operations
+                </h2>
+
+                <p>
+                    Keep the team organised and customers informed
+                    without complicated software.
+                </p>
+
+            </div>
+
+
+            <div class="feature-grid">
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        01
+                    </div>
+
+                    <h3>Vehicle Registration</h3>
+
+                    <p>
+                        Register customers and vehicles quickly
+                        and add them directly to today's queue.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        02
+                    </div>
+
+                    <h3>Live Wash Queue</h3>
+
+                    <p>
+                        Track vehicles from waiting to washing,
+                        finishing and ready for collection.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        03
+                    </div>
+
+                    <h3>Customer Notifications</h3>
+
+                    <p>
+                        Notify customers through WhatsApp when
+                        their vehicle is ready for collection.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        04
+                    </div>
+
+                    <h3>Payments & Revenue</h3>
+
+                    <p>
+                        Record payment methods and monitor
+                        daily paid revenue from the dashboard.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="home-footer">
+
+        <strong>
+            CarWash Connect
+        </strong>
+
+        <p>
+            Car wash operations made simple.
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
+
+
+
+
+

@@ -1,0 +1,253 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Register Vehicle | CarWash Connect</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'washes/css/style.css' %}"
+    >
+</head>
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="dashboard-header">
+
+        <div class="header-inner">
+
+            <div class="brand">
+
+                <h1>CarWash Connect</h1>
+
+                {% if car_wash %}
+                    <p>{{ car_wash.name }}</p>
+                {% endif %}
+
+            </div>
+
+            <div class="header-user">
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="btn btn-logout"
+                >
+                    ← Back to Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         REGISTER VEHICLE
+    ====================================================== -->
+
+    <main class="form-container">
+
+        <div class="form-card">
+
+            <h2>Register Vehicle</h2>
+
+            <p class="form-description">
+                Register a customer vehicle and add it to
+                today's wash queue.
+            </p>
+
+
+            <!-- =================================================
+                 FORM ERRORS
+            ================================================== -->
+
+            {% if form.non_field_errors %}
+
+                <div class="form-errors">
+
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 FORM
+            ================================================== -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <!-- CUSTOMER NAME -->
+
+                <p>
+                    <label for="{{ form.customer_name.id_for_label }}">
+                        Customer Name
+                    </label>
+
+                    {{ form.customer_name }}
+
+                    {% for error in form.customer_name.errors %}
+                        <span class="field-error">
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </p>
+
+
+                <!-- PHONE NUMBER -->
+
+                <p>
+                    <label for="{{ form.phone_number.id_for_label }}">
+                        Phone Number
+                    </label>
+
+                    {{ form.phone_number }}
+
+                    {% for error in form.phone_number.errors %}
+                        <span class="field-error">
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </p>
+
+
+                <!-- REGISTRATION -->
+
+                <p>
+                    <label for="{{ form.registration_number.id_for_label }}">
+                        Vehicle Registration
+                    </label>
+
+                    {{ form.registration_number }}
+
+                    {% for error in form.registration_number.errors %}
+                        <span class="field-error">
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </p>
+
+
+                <!-- VEHICLE MAKE -->
+
+                <p>
+                    <label for="{{ form.vehicle_make.id_for_label }}">
+                        Vehicle Make
+                    </label>
+
+                    {{ form.vehicle_make }}
+
+                    {% for error in form.vehicle_make.errors %}
+                        <span class="field-error">
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </p>
+
+
+                <!-- VEHICLE MODEL -->
+
+                <p>
+                    <label for="{{ form.vehicle_model.id_for_label }}">
+                        Vehicle Model
+                    </label>
+
+                    {{ form.vehicle_model }}
+
+                    {% for error in form.vehicle_model.errors %}
+                        <span class="field-error">
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </p>
+
+
+                <!-- VEHICLE TYPE -->
+
+                <p>
+                    <label for="{{ form.vehicle_type.id_for_label }}">
+                        Vehicle Type
+                    </label>
+
+                    {{ form.vehicle_type }}
+
+                    {% for error in form.vehicle_type.errors %}
+                        <span class="field-error">
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </p>
+
+
+                <!-- WASH SERVICE -->
+
+                <p>
+                    <label for="{{ form.service.id_for_label }}">
+                        Wash Service
+                    </label>
+
+                    {{ form.service }}
+
+                    {% for error in form.service.errors %}
+                        <span class="field-error">
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </p>
+
+
+                <!-- NOTES -->
+
+                <p>
+                    <label for="{{ form.notes.id_for_label }}">
+                        Notes
+                    </label>
+
+                    {{ form.notes }}
+
+                    {% for error in form.notes.errors %}
+                        <span class="field-error">
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </p>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-mobile-full"
+                >
+                    Register Vehicle
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

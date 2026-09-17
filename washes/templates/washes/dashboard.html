@@ -1,0 +1,705 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CarWash Connect Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'washes/css/style.css' %}"
+    >
+</head>
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="dashboard-header">
+
+        <div class="header-inner">
+
+            <div class="brand">
+
+                <h1>CarWash Connect</h1>
+
+                {% if car_wash %}
+                    <p>{{ car_wash.name }}</p>
+                {% endif %}
+
+            </div>
+
+
+            <div class="header-user">
+
+                {% if staff_profile %}
+                    <span>
+                        Logged in as:
+                        <strong>{{ request.user.username }}</strong>
+                    </span>
+                {% endif %}
+
+                <a
+                    href="{% url 'staff_logout' %}"
+                    class="btn btn-logout"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN DASHBOARD
+    ====================================================== -->
+
+    <main class="dashboard-container">
+
+
+        <!-- =================================================
+             TODAY'S OPERATIONS
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <h2>Today's Operations</h2>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <span class="stat-number">
+                        {{ registered_count }}
+                    </span>
+
+                    <span class="stat-label">
+                        Registered
+                    </span>
+                </div>
+
+
+                <div class="stat-card">
+                    <span class="stat-number">
+                        {{ waiting_count }}
+                    </span>
+
+                    <span class="stat-label">
+                        Waiting
+                    </span>
+                </div>
+
+
+                <div class="stat-card">
+                    <span class="stat-number">
+                        {{ washing_count }}
+                    </span>
+
+                    <span class="stat-label">
+                        Washing
+                    </span>
+                </div>
+
+
+                <div class="stat-card">
+                    <span class="stat-number">
+                        {{ finishing_count }}
+                    </span>
+
+                    <span class="stat-label">
+                        Finishing
+                    </span>
+                </div>
+
+
+                <div class="stat-card">
+                    <span class="stat-number">
+                        {{ ready_count }}
+                    </span>
+
+                    <span class="stat-label">
+                        Ready
+                    </span>
+                </div>
+
+
+                <div class="stat-card">
+                    <span class="stat-number">
+                        {{ completed_count }}
+                    </span>
+
+                    <span class="stat-label">
+                        Completed
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TODAY'S REVENUE
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <h2>Today's Revenue</h2>
+
+            <div class="revenue-total">
+
+                <h3>
+                    R{{ today_revenue|floatformat:2 }}
+                </h3>
+
+                <p>
+                    Total paid revenue today
+                </p>
+
+            </div>
+
+
+            <div class="revenue-grid">
+
+                <div class="revenue-card">
+                    <span>Cash</span>
+
+                    <strong>
+                        R{{ cash_revenue|floatformat:2 }}
+                    </strong>
+                </div>
+
+
+                <div class="revenue-card">
+                    <span>Card</span>
+
+                    <strong>
+                        R{{ card_revenue|floatformat:2 }}
+                    </strong>
+                </div>
+
+
+                <div class="revenue-card">
+                    <span>EFT</span>
+
+                    <strong>
+                        R{{ eft_revenue|floatformat:2 }}
+                    </strong>
+                </div>
+
+
+                <div class="revenue-card">
+                    <span>Other</span>
+
+                    <strong>
+                        R{{ other_revenue|floatformat:2 }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+     DASHBOARD ACTIONS
+================================================== -->
+
+<section class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Operations</h2>
+            <p class="form-description">
+                Manage today's car wash operations.
+            </p>
+        </div>
+
+        <div class="dashboard-actions">
+
+            <a
+                href="{% url 'register_vehicle' %}"
+                class="btn btn-primary"
+            >
+                + Register Vehicle
+            </a>
+
+            {% if staff_profile.role == "manager" %}
+
+                <a
+                    href="{% url 'daily_report' %}"
+                    class="btn btn-success"
+                >
+                    View Daily Report
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+        <!-- =================================================
+             LIVE QUEUE
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Live Queue</h2>
+                </div>
+
+            </div>
+
+
+            <div class="queue-grid">
+
+                {% for job in active_jobs %}
+
+                    <article class="job-card">
+
+                        <!-- =====================================
+                             VEHICLE HEADER
+                        ====================================== -->
+
+                        <h3>
+                            {{ job.vehicle.registration_number }}
+                        </h3>
+
+
+                        <!-- =====================================
+                             STATUS BADGE
+                        ====================================== -->
+
+                        {% if job.status == "waiting" %}
+
+                            <span class="status-badge status-waiting">
+                                Waiting
+                            </span>
+
+                        {% elif job.status == "washing" %}
+
+                            <span class="status-badge status-washing">
+                                Washing
+                            </span>
+
+                        {% elif job.status == "finishing" %}
+
+                            <span class="status-badge status-finishing">
+                                Drying / Finishing
+                            </span>
+
+                        {% elif job.status == "ready" %}
+
+                            <span class="status-badge status-ready">
+                                Ready
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge">
+                                {{ job.get_status_display }}
+                            </span>
+
+                        {% endif %}
+
+
+                        <!-- =====================================
+                             VEHICLE INFORMATION
+                        ====================================== -->
+
+                        <p>
+                            <strong>Customer:</strong>
+                            {{ job.customer.name }}
+                        </p>
+
+
+                        <p>
+                            <strong>Vehicle:</strong>
+
+                            {% if job.vehicle.make %}
+                                {{ job.vehicle.make }}
+                            {% endif %}
+
+                            {% if job.vehicle.model %}
+                                {{ job.vehicle.model }}
+                            {% endif %}
+                        </p>
+
+
+                        <p>
+                            <strong>Vehicle Type:</strong>
+                            {{ job.vehicle.get_vehicle_type_display }}
+                        </p>
+
+
+                        <p>
+                            <strong>Service:</strong>
+                            {{ job.service.name }}
+                        </p>
+
+
+                        <p>
+                            <strong>Status:</strong>
+                            {{ job.get_status_display }}
+                        </p>
+
+
+                        <p>
+                            <strong>Amount:</strong>
+                            R{{ job.amount|floatformat:2 }}
+                        </p>
+
+
+                        {% if job.notes %}
+
+                            <p>
+                                <strong>Notes:</strong>
+                                {{ job.notes }}
+                            </p>
+
+                        {% endif %}
+
+
+                        <!-- =====================================
+                             WAITING
+                        ====================================== -->
+
+                        {% if job.status == "waiting" %}
+
+                            <hr>
+
+                            <form
+                                method="POST"
+                                action="{% url 'update_job_status' job.id %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >
+                                    Start Washing
+                                </button>
+
+                            </form>
+
+
+                        <!-- =====================================
+                             WASHING
+                        ====================================== -->
+
+                        {% elif job.status == "washing" %}
+
+                            <hr>
+
+                            <form
+                                method="POST"
+                                action="{% url 'update_job_status' job.id %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >
+                                    Move to Finishing
+                                </button>
+
+                            </form>
+
+
+                        <!-- =====================================
+                             FINISHING
+                        ====================================== -->
+
+                        {% elif job.status == "finishing" %}
+
+                            <hr>
+
+                            <form
+                                method="POST"
+                                action="{% url 'update_job_status' job.id %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-warning"
+                                >
+                                    Mark Ready
+                                </button>
+
+                            </form>
+
+
+                        <!-- =====================================
+                             READY
+                        ====================================== -->
+
+                        {% elif job.status == "ready" %}
+
+                            <!-- =================================
+                                 CUSTOMER NOTIFICATION
+                            ================================== -->
+
+                            <div class="notification-box">
+
+                                <h4>
+                                    Customer Notification
+                                </h4>
+
+                                <p>
+                                    Vehicle is ready for collection.
+                                </p>
+
+                                <a
+                                    href="https://wa.me/{{ job.customer.whatsapp_number }}?text=Hi%20{{ job.customer.name|urlencode }}%2C%20your%20{{ job.vehicle.make|urlencode }}%20{{ job.vehicle.model|urlencode }}%20({{ job.vehicle.registration_number|urlencode }})%20is%20ready%20for%20collection%20at%20{{ car_wash.name|urlencode }}.%20Amount%20due%3A%20R{{ job.amount }}."
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn btn-whatsapp"
+                                >
+                                    Notify Customer on WhatsApp
+                                </a>
+
+                            </div>
+
+
+                            <!-- =================================
+                                 PAYMENT
+                            ================================== -->
+
+                            <div class="payment-box">
+
+                                <h4>
+                                    Payment
+                                </h4>
+
+                                <p>
+                                    Amount Due:
+                                    <strong>
+                                        R{{ job.amount|floatformat:2 }}
+                                    </strong>
+                                </p>
+
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'confirm_payment' job.id %}"
+                                >
+                                    {% csrf_token %}
+
+                                    <p>
+                                        Select payment method:
+                                    </p>
+
+
+                                    <div class="payment-options">
+
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                name="payment_method"
+                                                value="cash"
+                                                required
+                                            >
+                                            Cash
+                                        </label>
+
+
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                name="payment_method"
+                                                value="card"
+                                                required
+                                            >
+                                            Card
+                                        </label>
+
+
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                name="payment_method"
+                                                value="eft"
+                                                required
+                                            >
+                                            EFT
+                                        </label>
+
+
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                name="payment_method"
+                                                value="other"
+                                                required
+                                            >
+                                            Other
+                                        </label>
+
+                                    </div>
+
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success"
+                                    >
+                                        Confirm Payment & Collect
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+
+                        <!-- =====================================
+                             REGISTERED
+                        ====================================== -->
+
+                        {% elif job.status == "registered" %}
+
+                            <hr>
+
+                            <p>
+                                Vehicle registered.
+                            </p>
+
+
+                        <!-- =====================================
+                             CANCELLED
+                        ====================================== -->
+
+                        {% elif job.status == "cancelled" %}
+
+                            <hr>
+
+                            <p>
+                                <strong>Cancelled</strong>
+                            </p>
+
+                        {% endif %}
+
+                    </article>
+
+
+                {% empty %}
+
+                    <p class="empty-message">
+                        No vehicles currently in the queue.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLETED TODAY
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Completed Today</h2>
+                </div>
+
+            </div>
+
+
+            <div class="queue-grid">
+
+                {% for job in completed_jobs %}
+
+                    <article class="job-card completed-card">
+
+                        <h3>
+                            {{ job.vehicle.registration_number }}
+                        </h3>
+
+
+                        <span class="completed-label">
+                            ✓ Completed
+                        </span>
+
+
+                        <p>
+                            <strong>Customer:</strong>
+                            {{ job.customer.name }}
+                        </p>
+
+
+                        <p>
+                            <strong>Vehicle:</strong>
+
+                            {% if job.vehicle.make %}
+                                {{ job.vehicle.make }}
+                            {% endif %}
+
+                            {% if job.vehicle.model %}
+                                {{ job.vehicle.model }}
+                            {% endif %}
+                        </p>
+
+
+                        <p>
+                            <strong>Service:</strong>
+                            {{ job.service.name }}
+                        </p>
+
+
+                        <p>
+                            <strong>Amount:</strong>
+                            R{{ job.amount|floatformat:2 }}
+                        </p>
+
+
+                        <p>
+                            <strong>Payment:</strong>
+                            {{ job.get_payment_method_display }}
+                            —
+                            {{ job.get_payment_status_display }}
+                        </p>
+
+                    </article>
+
+
+                {% empty %}
+
+                    <p class="empty-message">
+                        No completed vehicles today.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

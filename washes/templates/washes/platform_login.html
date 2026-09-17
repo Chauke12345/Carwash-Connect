@@ -1,0 +1,154 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Platform Admin | CarWash Connect</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'washes/css/style.css' %}"
+    >
+</head>
+
+<body class="platform-login-page">
+
+    <main class="platform-login-container">
+
+        <div class="platform-login-card">
+
+            <!-- =============================================
+                 BRAND
+            ============================================== -->
+
+            <div class="platform-login-brand">
+
+                <div class="platform-admin-badge">
+                    PLATFORM ADMIN
+                </div>
+
+                <h1>CarWash Connect</h1>
+
+                <p>
+                    Platform Management & Monitoring
+                </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 LOGIN HEADING
+            ============================================== -->
+
+            <div class="platform-login-heading">
+
+                <h2>Administrator Login</h2>
+
+                <p>
+                    Sign in to monitor connected car washes
+                    and platform activity.
+                </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 ERROR
+            ============================================== -->
+
+            {% if error %}
+
+                <div class="login-error">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- =============================================
+                 LOGIN FORM
+            ============================================== -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="login-field">
+
+                    <label for="username">
+                        Administrator Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        autocomplete="username"
+                        placeholder="Enter administrator username"
+                        autofocus
+                    >
+
+                </div>
+
+
+                <div class="login-field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary platform-login-button"
+                >
+                    Access Platform
+                </button>
+
+            </form>
+
+
+            <!-- =============================================
+                 FOOTER
+            ============================================== -->
+
+            <div class="platform-login-footer">
+
+                <p>
+                    CarWash Connect Platform Administration
+                </p>
+
+                <a href="{% url 'home' %}">
+                    ← Return to CarWash Connect
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

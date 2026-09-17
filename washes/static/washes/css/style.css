@@ -1,0 +1,1589 @@
+/* =========================================================
+   CARWASH CONNECT - MAIN STYLES
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary: #0f172a;
+    --primary-light: #1e293b;
+    --blue: #2563eb;
+    --blue-hover: #1d4ed8;
+    --green: #16a34a;
+    --green-hover: #15803d;
+    --orange: #f59e0b;
+    --red: #dc2626;
+
+    --background: #f1f5f9;
+    --surface: #ffffff;
+    --surface-soft: #f8fafc;
+
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+
+    --radius: 14px;
+    --shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.dashboard-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px 5%;
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.brand h1 {
+    font-size: 26px;
+    margin-bottom: 2px;
+}
+
+.brand p {
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.header-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-user span {
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   MAIN DASHBOARD
+========================================================= */
+
+.dashboard-container {
+    width: min(1200px, 92%);
+    margin: 32px auto 60px;
+}
+
+.dashboard-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.section-header h2,
+.dashboard-section > h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+}
+
+.stat-card {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 10px;
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   REVENUE
+========================================================= */
+
+.revenue-total {
+    background: var(--primary);
+    color: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.revenue-total h3 {
+    font-size: 34px;
+    margin-bottom: 3px;
+}
+
+.revenue-total p {
+    color: #cbd5e1;
+}
+
+.revenue-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.revenue-card {
+    padding: 16px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.revenue-card span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.revenue-card strong {
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn {
+    display: inline-block;
+    border: none;
+    border-radius: 9px;
+    padding: 11px 17px;
+
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-primary {
+    background: var(--blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--blue-hover);
+}
+
+.btn-success {
+    background: var(--green);
+    color: white;
+}
+
+.btn-success:hover {
+    background: var(--green-hover);
+}
+
+.btn-warning {
+    background: var(--orange);
+    color: #111827;
+}
+
+.btn-whatsapp {
+    background: #16a34a;
+    color: white;
+}
+
+.btn-whatsapp:hover {
+    background: #15803d;
+}
+
+.btn-logout {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+}
+
+.btn-logout:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
+/* =========================================================
+   QUEUE
+========================================================= */
+
+.queue-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.job-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    background: white;
+}
+
+.job-card h3 {
+    font-size: 21px;
+    margin-bottom: 14px;
+}
+
+.job-card p {
+    margin: 7px 0;
+}
+
+.job-card hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 18px 0;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.status-waiting {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-washing {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status-finishing {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.status-ready {
+    background: #dcfce7;
+    color: #166534;
+}
+
+
+/* =========================================================
+   PAYMENT / WHATSAPP
+========================================================= */
+
+.notification-box {
+    margin-top: 18px;
+    padding: 17px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+}
+
+.notification-box h4 {
+    margin-bottom: 5px;
+}
+
+.notification-box p {
+    margin-bottom: 12px;
+}
+
+.payment-box {
+    margin-top: 18px;
+    padding: 17px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.payment-box h4 {
+    margin-bottom: 8px;
+}
+
+.payment-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 15px 0;
+}
+
+.payment-options label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.payment-options input[type="radio"] {
+    width: auto;
+}
+
+
+/* =========================================================
+   COMPLETED JOBS
+========================================================= */
+
+.completed-card {
+    border-left: 5px solid var(--green);
+}
+
+.completed-label {
+    display: inline-block;
+    color: var(--green);
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.empty-message {
+    color: var(--muted);
+    padding: 15px 0;
+}
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-container {
+    width: min(700px, 92%);
+    margin: 40px auto;
+}
+
+.form-card {
+    background: white;
+    padding: 28px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.form-card h2 {
+    margin-bottom: 8px;
+}
+
+.form-description {
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+
+.form-card form p {
+    margin-bottom: 17px;
+}
+
+.form-card label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    font: inherit;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .revenue-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .queue-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .header-user {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .dashboard-container {
+        width: 94%;
+        margin-top: 20px;
+    }
+
+    .dashboard-section {
+        padding: 18px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .revenue-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .btn-mobile-full {
+        width: 100%;
+        text-align: center;
+    }
+
+    .payment-options {
+        flex-direction: column;
+    }
+}
+
+/* =========================================================
+   FORM ERRORS
+========================================================= */
+
+.form-errors {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.field-error {
+    display: block;
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* =========================================================
+   STAFF LOGIN
+========================================================= */
+
+.login-page {
+    min-height: 100vh;
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #1e293b 50%,
+            #2563eb 100%
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 430px;
+}
+
+.login-card {
+    background: white;
+    border-radius: 18px;
+    padding: 36px;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.login-brand {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-brand h1 {
+    font-size: 29px;
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+
+.login-brand p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.login-heading {
+    margin-bottom: 25px;
+}
+
+.login-heading h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.login-heading p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.login-field {
+    margin-bottom: 18px;
+}
+
+.login-field label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.login-field input {
+    width: 100%;
+}
+
+.login-button {
+    width: 100%;
+    margin-top: 5px;
+    padding: 12px 18px;
+}
+
+.login-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+    font-size: 14px;
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+}
+
+.login-footer a {
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   LOGIN MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+    .login-page {
+        padding: 15px;
+    }
+
+    .login-card {
+        padding: 26px 20px;
+    }
+
+    .login-brand h1 {
+        font-size: 25px;
+    }
+}
+
+/* =========================================================
+   HOME PAGE
+========================================================= */
+
+.home-page {
+    background: #ffffff;
+}
+
+.home-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+}
+
+.home-nav {
+    max-width: 1200px;
+    min-height: 74px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.home-logo {
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.home-hero {
+    max-width: 1200px;
+    margin: auto;
+    padding: 80px 5%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 60px;
+}
+
+.hero-label {
+    display: inline-block;
+
+    background: #dbeafe;
+    color: #1d4ed8;
+
+    padding: 7px 12px;
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    margin-bottom: 20px;
+}
+
+.hero-content h1 {
+    font-size: clamp(38px, 5vw, 60px);
+    line-height: 1.08;
+    letter-spacing: -2px;
+
+    margin-bottom: 22px;
+}
+
+.hero-content > p {
+    max-width: 600px;
+
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.hero-actions {
+    margin-top: 30px;
+}
+
+.hero-button {
+    padding: 13px 23px;
+}
+
+
+/* =========================================================
+   DASHBOARD PREVIEW
+========================================================= */
+
+.hero-preview {
+    background: var(--primary);
+    color: white;
+
+    border-radius: 20px;
+    padding: 25px;
+
+    box-shadow:
+        0 30px 70px rgba(15, 23, 42, 0.22);
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.preview-header strong {
+    display: block;
+    font-size: 17px;
+}
+
+.preview-header span {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.preview-live {
+    color: #4ade80 !important;
+    font-weight: 700;
+}
+
+.preview-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.preview-stats div {
+    background: var(--primary-light);
+
+    padding: 17px;
+    border-radius: 10px;
+}
+
+.preview-stats strong {
+    display: block;
+    font-size: 25px;
+}
+
+.preview-stats span {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.preview-job {
+    background: white;
+    color: var(--text);
+
+    padding: 15px;
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.preview-job strong {
+    display: block;
+}
+
+.preview-job div span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.home-features {
+    background: var(--surface-soft);
+    padding: 80px 5%;
+}
+
+.features-heading {
+    max-width: 650px;
+    margin: 0 auto 45px;
+    text-align: center;
+}
+
+.features-heading > span {
+    color: var(--blue);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.features-heading h2 {
+    font-size: 34px;
+    margin: 10px 0 12px;
+}
+
+.features-heading p {
+    color: var(--muted);
+}
+
+.feature-grid {
+    max-width: 1200px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.feature-card {
+    background: white;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    padding: 25px;
+}
+
+.feature-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #dbeafe;
+    color: var(--blue);
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    margin-bottom: 18px;
+}
+
+.feature-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   HOME FOOTER
+========================================================= */
+
+.home-footer {
+    background: var(--primary);
+    color: white;
+
+    text-align: center;
+    padding: 35px 20px;
+}
+
+.home-footer strong {
+    font-size: 18px;
+}
+
+.home-footer p {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   HOME RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .home-hero {
+        grid-template-columns: 1fr;
+        padding-top: 55px;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .home-header {
+        padding: 0 4%;
+    }
+
+    .home-nav {
+        min-height: 65px;
+    }
+
+    .home-logo {
+        font-size: 18px;
+    }
+
+    .home-hero {
+        padding: 45px 5%;
+        gap: 40px;
+    }
+
+    .hero-content h1 {
+        font-size: 39px;
+        letter-spacing: -1px;
+    }
+
+    .hero-content > p {
+        font-size: 16px;
+    }
+
+    .hero-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .hero-preview {
+        padding: 18px;
+    }
+
+    .preview-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .preview-stats div {
+        padding: 12px 8px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .home-features {
+        padding: 55px 5%;
+    }
+
+    .features-heading h2 {
+        font-size: 28px;
+    }
+}
+
+/* =========================================================
+   MANAGER DAILY REPORT
+========================================================= */
+
+.report-date {
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.report-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.report-summary-card {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.report-summary-card span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.report-summary-card strong {
+    display: block;
+    font-size: 28px;
+}
+
+.revenue-highlight {
+    background: var(--primary);
+    color: white;
+}
+
+.revenue-highlight span {
+    color: #cbd5e1;
+}
+
+.report-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.report-table th {
+    background: var(--surface-soft);
+    color: var(--muted);
+
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+
+    text-align: left;
+
+    padding: 13px 15px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.report-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+}
+
+.report-table tbody tr:hover {
+    background: var(--surface-soft);
+}
+
+.report-empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px !important;
+}
+
+
+/* =========================================================
+   REPORT MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .report-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .report-summary-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .report-summary-card {
+        padding: 16px;
+    }
+
+    .report-summary-card strong {
+        font-size: 23px;
+    }
+}
+
+/* =========================================================
+   DASHBOARD ACTIONS
+========================================================= */
+
+.dashboard-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+
+    .dashboard-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .dashboard-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* =========================================================
+   PLATFORM MONITORING
+========================================================= */
+
+.platform-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.platform-stat-card {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.platform-stat-card span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.platform-stat-card strong {
+    display: block;
+    font-size: 28px;
+}
+
+.platform-value-card {
+    background: var(--primary);
+    color: white;
+}
+
+.platform-value-card span {
+    color: #cbd5e1;
+}
+
+
+/* =========================================================
+   CAR WASH MONITORING CARDS
+========================================================= */
+
+.monitoring-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.monitoring-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+}
+
+.monitoring-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+
+    padding-bottom: 17px;
+    margin-bottom: 17px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.monitoring-card-header h3 {
+    font-size: 19px;
+    margin-bottom: 4px;
+}
+
+.monitoring-card-header p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.monitoring-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.monitoring-status.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.monitoring-status.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.monitoring-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.monitoring-stats div {
+    background: var(--surface-soft);
+    border-radius: 9px;
+    padding: 12px;
+}
+
+.monitoring-stats span {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.monitoring-stats strong {
+    font-size: 20px;
+}
+
+.monitoring-revenue {
+    margin-top: 15px;
+
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+
+    padding: 15px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.monitoring-revenue span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.monitoring-revenue strong {
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   MONITORING MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .platform-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .monitoring-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .platform-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .platform-stat-card {
+        padding: 16px;
+    }
+
+    .platform-stat-card strong {
+        font-size: 23px;
+    }
+
+    .monitoring-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .monitoring-revenue {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* =========================================================
+   PLATFORM MONITORING ACTIONS
+========================================================= */
+
+.monitoring-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+}
+
+.monitoring-actions .btn {
+    width: 100%;
+    text-align: center;
+}
+
+/* =========================================================
+   PLATFORM ADMIN LOGIN
+========================================================= */
+
+.platform-login-page {
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            135deg,
+            #020617 0%,
+            #0f172a 50%,
+            #1e3a8a 100%
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+}
+
+.platform-login-container {
+    width: 100%;
+    max-width: 460px;
+}
+
+.platform-login-card {
+    background: white;
+
+    border-radius: 18px;
+    padding: 38px;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.3);
+}
+
+.platform-login-brand {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.platform-admin-badge {
+    display: inline-block;
+
+    background: #dbeafe;
+    color: #1d4ed8;
+
+    padding: 6px 11px;
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+
+    margin-bottom: 15px;
+}
+
+.platform-login-brand h1 {
+    color: var(--primary);
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.platform-login-brand p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.platform-login-heading {
+    margin-bottom: 24px;
+}
+
+.platform-login-heading h2 {
+    font-size: 21px;
+    margin-bottom: 6px;
+}
+
+.platform-login-heading p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.platform-login-button {
+    width: 100%;
+    margin-top: 7px;
+    padding: 13px 18px;
+}
+
+.platform-login-footer {
+    text-align: center;
+
+    border-top: 1px solid var(--border);
+
+    margin-top: 27px;
+    padding-top: 20px;
+}
+
+.platform-login-footer p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.platform-login-footer a {
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.platform-login-footer a:hover {
+    text-decoration: underline;
+}
+
+
+@media (max-width: 500px) {
+
+    .platform-login-page {
+        padding: 15px;
+    }
+
+    .platform-login-card {
+        padding: 28px 21px;
+    }
+
+    .platform-login-brand h1 {
+        font-size: 26px;
+    }
+}
+
+/* =========================================================
+   PLATFORM BILLING
+========================================================= */
+
+.billing-summary {
+    margin-top: 18px;
+    padding-top: 18px;
+
+    border-top: 1px solid var(--border);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.billing-summary div {
+    background: var(--surface-soft);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.billing-summary span {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.billing-summary strong {
+    font-size: 18px;
+}
+
+.billing-paid {
+    color: #15803d;
+}
+
+.billing-pending {
+    color: #b45309;
+}
+
+.billing-overdue {
+    color: #b91c1c;
+}
+
+
+@media (max-width: 600px) {
+
+    .billing-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/* =========================================================
+   CARWASH CONNECT BRAND LOGO
+========================================================= */
+
+.home-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.home-brand-icon {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    display: block;
+    border-radius: 14px;
+}
+
+@media (max-width: 600px) {
+
+    .home-brand-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 12px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+    .home-brand-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+    }
+
+    .home-brand span {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,410 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ car_wash.name }} | CarWash Connect
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'washes/css/style.css' %}"
+    >
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="dashboard-header">
+
+        <div>
+            <h1>CarWash Connect</h1>
+
+            <p>Platform Administration</p>
+        </div>
+
+        <div>
+            <strong>
+                Platform Admin:
+                {{ request.user.username }}
+            </strong>
+
+            <a
+                href="{% url 'platform_monitoring' %}"
+                class="btn btn-secondary"
+            >
+                ← Platform Monitoring
+            </a>
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         CAR WASH INFORMATION
+    ========================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <div>
+                <h2>{{ car_wash.name }}</h2>
+
+                <p class="form-description">
+                    {{ car_wash.location }}
+                </p>
+            </div>
+
+            {% if car_wash.is_active %}
+                <span class="status-badge status-ready">
+                    Active
+                </span>
+            {% else %}
+                <span class="status-badge">
+                    Inactive
+                </span>
+            {% endif %}
+
+        </div>
+
+        <div class="monitoring-grid">
+
+            <div class="monitoring-stat">
+                <span>Owner</span>
+                <strong>{{ car_wash.owner_name }}</strong>
+            </div>
+
+            <div class="monitoring-stat">
+                <span>Phone</span>
+                <strong>{{ car_wash.phone_number }}</strong>
+            </div>
+
+            <div class="monitoring-stat">
+                <span>Location</span>
+                <strong>{{ car_wash.location }}</strong>
+            </div>
+
+            <div class="monitoring-stat">
+                <span>Active Staff</span>
+                <strong>{{ staff_members|length }}</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         TODAY'S PERFORMANCE
+    ========================================== -->
+
+    <section class="dashboard-section">
+
+        <h2>Today's Performance</h2>
+
+        <p class="form-description">
+            {{ report_date|date:"l, d F Y" }}
+        </p>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <span>Total Vehicles</span>
+                <strong>{{ total_jobs }}</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>Active Queue</span>
+                <strong>{{ active_count }}</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>Completed</span>
+                <strong>{{ completed_count }}</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>Transaction Value</span>
+                <strong>
+                    R{{ total_revenue|floatformat:2 }}
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         ACTIVE QUEUE
+    ========================================== -->
+
+    <section class="dashboard-section">
+
+        <h2>Current Active Queue</h2>
+
+        {% if active_jobs %}
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Registration</th>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for job in active_jobs %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ job.vehicle.registration_number }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ job.customer.name }}
+                            </td>
+
+                            <td>
+                                {{ job.vehicle.make }}
+                                {{ job.vehicle.model }}
+                            </td>
+
+                            <td>
+                                {{ job.service.name }}
+                            </td>
+
+                            <td>
+                                {{ job.get_status_display }}
+                            </td>
+
+                            <td>
+                                R{{ job.amount|floatformat:2 }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <p>No vehicles currently in the queue.</p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =========================================
+         COMPLETED TODAY
+    ========================================== -->
+
+    <section class="dashboard-section">
+
+        <h2>Completed Today</h2>
+
+        {% if completed_jobs %}
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Registration</th>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Service</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for job in completed_jobs %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ job.vehicle.registration_number }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ job.customer.name }}
+                            </td>
+
+                            <td>
+                                {{ job.vehicle.make }}
+                                {{ job.vehicle.model }}
+                            </td>
+
+                            <td>
+                                {{ job.service.name }}
+                            </td>
+
+                            <td>
+                                {{ job.get_payment_method_display }}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    R{{ job.amount|floatformat:2 }}
+                                </strong>
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <p>No completed vehicles today.</p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =========================================
+         STAFF
+    ========================================== -->
+
+    <section class="dashboard-section">
+
+        <h2>Staff</h2>
+
+        {% for staff in staff_members %}
+
+            <div class="monitoring-card">
+
+                <div>
+                    <strong>
+                        {{ staff.user.username }}
+                    </strong>
+
+                    <p>
+                        {{ staff.get_role_display }}
+                    </p>
+                </div>
+
+                {% if staff.is_active %}
+                    <span class="status-badge status-ready">
+                        Active
+                    </span>
+                {% else %}
+                    <span class="status-badge">
+                        Inactive
+                    </span>
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+
+            <p>No staff members registered.</p>
+
+        {% endfor %}
+
+    </section>
+
+
+    <!-- =========================================
+         SERVICES
+    ========================================== -->
+
+    <section class="dashboard-section">
+
+        <h2>Services</h2>
+
+        {% for service in services %}
+
+            <div class="monitoring-card">
+
+                <div>
+                    <strong>
+                        {{ service.name }}
+                    </strong>
+
+                    {% if service.description %}
+                        <p>{{ service.description }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <strong>
+                        R{{ service.price|floatformat:2 }}
+                    </strong>
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <p>No services configured.</p>
+
+        {% endfor %}
+
+    </section>
+
+
+    <!-- =========================================
+         BACK
+    ========================================== -->
+
+    <section class="dashboard-section">
+
+        <a
+            href="{% url 'platform_monitoring' %}"
+            class="btn btn-secondary"
+        >
+            ← Back to Platform Monitoring
+        </a>
+
+    </section>
+
+</div>
+
+</body>
+
+</html>

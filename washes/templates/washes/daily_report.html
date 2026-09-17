@@ -1,0 +1,410 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Daily Report | CarWash Connect</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'washes/css/style.css' %}"
+    >
+</head>
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="dashboard-header">
+
+        <div class="header-inner">
+
+            <div class="brand">
+
+                <h1>CarWash Connect</h1>
+
+                <p>{{ car_wash.name }}</p>
+
+            </div>
+
+            <div class="header-user">
+
+                <span>
+                    Manager:
+                    <strong>{{ request.user.username }}</strong>
+                </span>
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="btn btn-logout"
+                >
+                    ← Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         REPORT
+    ====================================================== -->
+
+    <main class="dashboard-container">
+
+        <!-- REPORT TITLE -->
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Daily Operations Report</h2>
+
+                    <p class="report-date">
+                        {{ report_date|date:"l, d F Y" }}
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             OPERATIONS SUMMARY
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <h2>Operations Summary</h2>
+
+            <div class="report-summary-grid">
+
+                <div class="report-summary-card">
+
+                    <span>Total Vehicles</span>
+
+                    <strong>
+                        {{ total_jobs }}
+                    </strong>
+
+                </div>
+
+
+                <div class="report-summary-card">
+
+                    <span>Active Queue</span>
+
+                    <strong>
+                        {{ active_count }}
+                    </strong>
+
+                </div>
+
+
+                <div class="report-summary-card">
+
+                    <span>Completed</span>
+
+                    <strong>
+                        {{ completed_count }}
+                    </strong>
+
+                </div>
+
+
+                <div class="report-summary-card revenue-highlight">
+
+                    <span>Total Revenue</span>
+
+                    <strong>
+                        R{{ total_revenue|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             REVENUE
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <h2>Revenue Breakdown</h2>
+
+            <div class="revenue-total">
+
+                <h3>
+                    R{{ total_revenue|floatformat:2 }}
+                </h3>
+
+                <p>
+                    Total paid revenue
+                </p>
+
+            </div>
+
+
+            <div class="revenue-grid">
+
+                <div class="revenue-card">
+                    <span>Cash</span>
+
+                    <strong>
+                        R{{ cash_revenue|floatformat:2 }}
+                    </strong>
+                </div>
+
+
+                <div class="revenue-card">
+                    <span>Card</span>
+
+                    <strong>
+                        R{{ card_revenue|floatformat:2 }}
+                    </strong>
+                </div>
+
+
+                <div class="revenue-card">
+                    <span>EFT</span>
+
+                    <strong>
+                        R{{ eft_revenue|floatformat:2 }}
+                    </strong>
+                </div>
+
+
+                <div class="revenue-card">
+                    <span>Other</span>
+
+                    <strong>
+                        R{{ other_revenue|floatformat:2 }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLETED VEHICLES
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <h2>Completed Vehicles</h2>
+
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Registration</th>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Service</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for job in completed_jobs %}
+
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        {{ job.vehicle.registration_number }}
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    {{ job.customer.name }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if job.vehicle.make %}
+                                        {{ job.vehicle.make }}
+                                    {% endif %}
+
+                                    {% if job.vehicle.model %}
+                                        {{ job.vehicle.model }}
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+                                    {{ job.service.name }}
+                                </td>
+
+
+                                <td>
+                                    {{ job.get_payment_method_display }}
+                                </td>
+
+
+                                <td>
+                                    <strong>
+                                        R{{ job.amount|floatformat:2 }}
+                                    </strong>
+                                </td>
+
+                            </tr>
+
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td
+                                    colspan="6"
+                                    class="report-empty"
+                                >
+                                    No completed vehicles today.
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ACTIVE QUEUE
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <h2>Current Active Queue</h2>
+
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Registration</th>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for job in active_jobs %}
+
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        {{ job.vehicle.registration_number }}
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    {{ job.customer.name }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if job.vehicle.make %}
+                                        {{ job.vehicle.make }}
+                                    {% endif %}
+
+                                    {% if job.vehicle.model %}
+                                        {{ job.vehicle.model }}
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+                                    {{ job.service.name }}
+                                </td>
+
+
+                                <td>
+                                    {{ job.get_status_display }}
+                                </td>
+
+
+                                <td>
+                                    R{{ job.amount|floatformat:2 }}
+                                </td>
+
+                            </tr>
+
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td
+                                    colspan="6"
+                                    class="report-empty"
+                                >
+                                    No vehicles currently in the queue.
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
