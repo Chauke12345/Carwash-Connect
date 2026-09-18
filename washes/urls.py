@@ -3,7 +3,20 @@ from . import views
 
 
 urlpatterns = [
-    path("", views.home, name="home"),
+
+    # =====================================================
+    # HOME
+    # =====================================================
+
+    path(
+        "",
+        views.home,
+        name="home"
+    ),
+
+    # =====================================================
+    # STAFF AUTHENTICATION
+    # =====================================================
 
     path(
         "login/",
@@ -17,11 +30,19 @@ urlpatterns = [
         name="staff_logout"
     ),
 
+    # =====================================================
+    # CAR WASH DASHBOARD
+    # =====================================================
+
     path(
         "dashboard/",
         views.dashboard,
         name="dashboard"
     ),
+
+    # =====================================================
+    # VEHICLE REGISTRATION
+    # =====================================================
 
     path(
         "register-vehicle/",
@@ -29,11 +50,29 @@ urlpatterns = [
         name="register_vehicle"
     ),
 
+    # =====================================================
+    # WASH JOB - ASSIGN PERSONNEL
+    # =====================================================
+
+    path(
+        "job/<int:job_id>/assign-personnel/",
+        views.assign_personnel,
+        name="assign_personnel"
+    ),
+
+    # =====================================================
+    # WASH JOB - UPDATE STATUS
+    # =====================================================
+
     path(
         "job/<int:job_id>/update-status/",
         views.update_job_status,
         name="update_job_status"
     ),
+
+    # =====================================================
+    # WASH JOB - PAYMENT
+    # =====================================================
 
     path(
         "job/<int:job_id>/payment/",
@@ -41,27 +80,41 @@ urlpatterns = [
         name="confirm_payment"
     ),
 
+    # =====================================================
+    # MANAGER REPORTS
+    # =====================================================
+
     path(
-    "reports/daily/",
-    views.daily_report,
-    name="daily_report"
-),
+        "reports/daily/",
+        views.daily_report,
+        name="daily_report"
+    ),
 
-path(
-    "platform/monitoring/",
-    views.platform_monitoring,
-    name="platform_monitoring"
-),
+    path(
+        "reports/monthly/",
+        views.monthly_report,
+        name="monthly_report"
+    ),
 
-path(
-    "platform/car-wash/<int:car_wash_id>/",
-    views.platform_car_wash_detail,
-    name="platform_car_wash_detail"
-),
+    # =====================================================
+    # EDVANCE TECH PLATFORM
+    # =====================================================
 
-path(
-    "platform/login/",
-    views.platform_login,
-    name="platform_login"
-),
+    path(
+        "platform/login/",
+        views.platform_login,
+        name="platform_login"
+    ),
+
+    path(
+        "platform/monitoring/",
+        views.platform_monitoring,
+        name="platform_monitoring"
+    ),
+
+    path(
+        "platform/car-wash/<int:car_wash_id>/",
+        views.platform_car_wash_detail,
+        name="platform_car_wash_detail"
+    ),
 ]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # =========================================================
 # CAR WASH
 # =========================================================
@@ -13,42 +14,26 @@ class CarWash(models.Model):
         ("overdue", "Overdue"),
     ]
 
-    name = models.CharField(
-        max_length=150
-    )
+    name = models.CharField(max_length=150)
 
-    slug = models.SlugField(
-        unique=True
-    )
+    slug = models.SlugField(unique=True)
 
-    owner_name = models.CharField(
-        max_length=150
-    )
+    owner_name = models.CharField(max_length=150)
 
-    phone_number = models.CharField(
-        max_length=20
-    )
+    phone_number = models.CharField(max_length=20)
 
     whatsapp_number = models.CharField(
         max_length=20,
         blank=True
     )
 
-    email = models.EmailField(
-        blank=True
-    )
+    email = models.EmailField(blank=True)
 
-    address = models.TextField(
-        blank=True
-    )
+    address = models.TextField(blank=True)
 
-    location = models.CharField(
-        max_length=150
-    )
+    location = models.CharField(max_length=150)
 
-    is_active = models.BooleanField(
-        default=True
-    )
+    is_active = models.BooleanField(default=True)
 
     # =====================================================
     # BILLING
@@ -66,9 +51,7 @@ class CarWash(models.Model):
         default="pending"
     )
 
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Car wash"
@@ -76,8 +59,11 @@ class CarWash(models.Model):
 
     def __str__(self):
         return self.name
+
+
 # =========================================================
-# STAFF
+# STAFF PROFILE
+# People who LOGIN to CarWash Connect
 # =========================================================
 
 class StaffProfile(models.Model):
@@ -105,12 +91,73 @@ class StaffProfile(models.Model):
         default="staff"
     )
 
-    phone_number = models.CharField(max_length=20, blank=True)
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True
+    )
+
     is_active = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.car_wash.name}"
+
+
+# =========================================================
+# CAR WASH PERSONNEL
+# People physically working on vehicles
+# No login account required
+# =========================================================
+
+class CarWashPersonnel(models.Model):
+
+    ROLE_CHOICES = [
+        ("washer", "Washer"),
+        ("interior", "Interior Cleaner"),
+        ("dryer", "Dryer / Finisher"),
+        ("polisher", "Polisher"),
+        ("supervisor", "Supervisor"),
+        ("cashier", "Cashier"),
+        ("other", "Other"),
+    ]
+
+    car_wash = models.ForeignKey(
+        CarWash,
+        on_delete=models.CASCADE,
+        related_name="personnel"
+    )
+
+    name = models.CharField(
+        max_length=150
+    )
+
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True
+    )
+
+    role = models.CharField(
+        max_length=30,
+        choices=ROLE_CHOICES,
+        default="washer"
+    )
+
+    is_active = models.BooleanField(
+        default=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "Car wash personnel"
+        verbose_name_plural = "Car wash personnel"
+        ordering = ["name"]
+
+    def __str__(self):
+        return f"{self.name} - {self.car_wash.name}"
 
 
 # =========================================================
@@ -125,19 +172,82 @@ class WashService(models.Model):
         related_name="services"
     )
 
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
+    name = models.CharField(
+        max_length=100
+    )
+
+    description = models.TextField(
+        blank=True
+    )
+
+    # Keep this for compatibility with your existing system.
+    # Vehicle-size pricing can override it.
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+
+    is_active = models.BooleanField(
+        default=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.name} - {self.car_wash.name}"
+
+
+# =========================================================
+# SERVICE PRICE BY VEHICLE SIZE
+# Example:
+# Full Wash + Small = R100
+# Full Wash + Medium = R110
+# =========================================================
+
+class WashServicePrice(models.Model):
+
+    VEHICLE_SIZE_CHOICES = [
+        ("small", "Small"),
+        ("medium", "Medium"),
+        ("large", "Large"),
+        ("extra_large", "Extra Large"),
+    ]
+
+    service = models.ForeignKey(
+        WashService,
+        on_delete=models.CASCADE,
+        related_name="size_prices"
+    )
+
+    vehicle_size = models.CharField(
+        max_length=20,
+        choices=VEHICLE_SIZE_CHOICES
+    )
 
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2
     )
 
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        unique_together = (
+            "service",
+            "vehicle_size"
+        )
+
+        ordering = [
+            "service",
+            "vehicle_size"
+        ]
 
     def __str__(self):
-        return f"{self.name} - {self.car_wash.name}"
+        return (
+            f"{self.service.name} - "
+            f"{self.get_vehicle_size_display()} - "
+            f"R{self.price}"
+        )
 
 
 # =========================================================
@@ -152,7 +262,9 @@ class Customer(models.Model):
         related_name="customers"
     )
 
-    name = models.CharField(max_length=150)
+    name = models.CharField(
+        max_length=150
+    )
 
     phone_number = models.CharField(
         max_length=20
@@ -169,7 +281,6 @@ class Customer(models.Model):
     @property
     def whatsapp_number(self):
 
-        # Remove spaces, brackets, hyphens and +
         number = (
             self.phone_number
             .strip()
@@ -180,8 +291,6 @@ class Customer(models.Model):
             .replace("+", "")
         )
 
-        # South African local number:
-        # 0791575962 -> 27791575962
         if number.startswith("0"):
             number = "27" + number[1:]
 
@@ -189,6 +298,7 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+
 
 # =========================================================
 # VEHICLE
@@ -205,13 +315,22 @@ class Vehicle(models.Model):
         ("other", "Other"),
     ]
 
+    VEHICLE_SIZE_CHOICES = [
+        ("small", "Small"),
+        ("medium", "Medium"),
+        ("large", "Large"),
+        ("extra_large", "Extra Large"),
+    ]
+
     customer = models.ForeignKey(
         Customer,
         on_delete=models.CASCADE,
         related_name="vehicles"
     )
 
-    registration_number = models.CharField(max_length=30)
+    registration_number = models.CharField(
+        max_length=30
+    )
 
     make = models.CharField(
         max_length=100,
@@ -227,6 +346,12 @@ class Vehicle(models.Model):
         max_length=20,
         choices=VEHICLE_TYPES,
         default="sedan"
+    )
+
+    vehicle_size = models.CharField(
+        max_length=20,
+        choices=VEHICLE_SIZE_CHOICES,
+        default="medium"
     )
 
     def __str__(self):
@@ -285,6 +410,17 @@ class WashJob(models.Model):
         related_name="wash_jobs"
     )
 
+    # =====================================================
+    # PERSONNEL ASSIGNMENT
+    # Multiple workers can work on one vehicle
+    # =====================================================
+
+    assigned_personnel = models.ManyToManyField(
+        CarWashPersonnel,
+        related_name="wash_jobs",
+        blank=True
+    )
+
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
@@ -312,6 +448,26 @@ class WashJob(models.Model):
         blank=True
     )
 
+    # =====================================================
+    # WORKFLOW TIMES
+    # Useful for reports and performance
+    # =====================================================
+
+    started_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    collected_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True
     )
@@ -326,7 +482,8 @@ class WashJob(models.Model):
             f"{self.vehicle.registration_number}"
         )
 
-    # =========================================================
+
+# =========================================================
 # PLATFORM PAYMENT
 # Payments made by car washes to Edvance Tech
 # =========================================================
@@ -380,5 +537,3 @@ class PlatformPayment(models.Model):
             f"{self.billing_year}/{self.billing_month} - "
             f"R{self.amount}"
         )
-
- 

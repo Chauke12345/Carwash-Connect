@@ -100,6 +100,7 @@
                 <!-- CUSTOMER NAME -->
 
                 <p>
+
                     <label for="{{ form.customer_name.id_for_label }}">
                         Customer Name
                     </label>
@@ -107,16 +108,20 @@
                     {{ form.customer_name }}
 
                     {% for error in form.customer_name.errors %}
+
                         <span class="field-error">
                             {{ error }}
                         </span>
+
                     {% endfor %}
+
                 </p>
 
 
                 <!-- PHONE NUMBER -->
 
                 <p>
+
                     <label for="{{ form.phone_number.id_for_label }}">
                         Phone Number
                     </label>
@@ -124,16 +129,20 @@
                     {{ form.phone_number }}
 
                     {% for error in form.phone_number.errors %}
+
                         <span class="field-error">
                             {{ error }}
                         </span>
+
                     {% endfor %}
+
                 </p>
 
 
-                <!-- REGISTRATION -->
+                <!-- VEHICLE REGISTRATION -->
 
                 <p>
+
                     <label for="{{ form.registration_number.id_for_label }}">
                         Vehicle Registration
                     </label>
@@ -141,16 +150,20 @@
                     {{ form.registration_number }}
 
                     {% for error in form.registration_number.errors %}
+
                         <span class="field-error">
                             {{ error }}
                         </span>
+
                     {% endfor %}
+
                 </p>
 
 
                 <!-- VEHICLE MAKE -->
 
                 <p>
+
                     <label for="{{ form.vehicle_make.id_for_label }}">
                         Vehicle Make
                     </label>
@@ -158,16 +171,20 @@
                     {{ form.vehicle_make }}
 
                     {% for error in form.vehicle_make.errors %}
+
                         <span class="field-error">
                             {{ error }}
                         </span>
+
                     {% endfor %}
+
                 </p>
 
 
                 <!-- VEHICLE MODEL -->
 
                 <p>
+
                     <label for="{{ form.vehicle_model.id_for_label }}">
                         Vehicle Model
                     </label>
@@ -175,16 +192,20 @@
                     {{ form.vehicle_model }}
 
                     {% for error in form.vehicle_model.errors %}
+
                         <span class="field-error">
                             {{ error }}
                         </span>
+
                     {% endfor %}
+
                 </p>
 
 
                 <!-- VEHICLE TYPE -->
 
                 <p>
+
                     <label for="{{ form.vehicle_type.id_for_label }}">
                         Vehicle Type
                     </label>
@@ -192,16 +213,43 @@
                     {{ form.vehicle_type }}
 
                     {% for error in form.vehicle_type.errors %}
+
                         <span class="field-error">
                             {{ error }}
                         </span>
+
                     {% endfor %}
+
+                </p>
+
+
+                <!-- =================================================
+                     VEHICLE SIZE
+                ================================================== -->
+
+                <p>
+
+                    <label for="{{ form.vehicle_size.id_for_label }}">
+                        Vehicle Size
+                    </label>
+
+                    {{ form.vehicle_size }}
+
+                    {% for error in form.vehicle_size.errors %}
+
+                        <span class="field-error">
+                            {{ error }}
+                        </span>
+
+                    {% endfor %}
+
                 </p>
 
 
                 <!-- WASH SERVICE -->
 
                 <p>
+
                     <label for="{{ form.service.id_for_label }}">
                         Wash Service
                     </label>
@@ -209,16 +257,20 @@
                     {{ form.service }}
 
                     {% for error in form.service.errors %}
+
                         <span class="field-error">
                             {{ error }}
                         </span>
+
                     {% endfor %}
+
                 </p>
 
 
                 <!-- NOTES -->
 
                 <p>
+
                     <label for="{{ form.notes.id_for_label }}">
                         Notes
                     </label>
@@ -226,10 +278,13 @@
                     {{ form.notes }}
 
                     {% for error in form.notes.errors %}
+
                         <span class="field-error">
                             {{ error }}
                         </span>
+
                     {% endfor %}
+
                 </p>
 
 

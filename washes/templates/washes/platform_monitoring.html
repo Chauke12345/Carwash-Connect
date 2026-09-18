@@ -218,9 +218,9 @@
                     <h2>Edvance Tech Billing</h2>
 
                     <p class="form-description">
-                        R5 platform fee for every completed and paid
-                        wash during the current month.
-                    </p>
+    R8 platform fee for every completed wash
+    during the current month.
+</p>
 
                 </div>
 
@@ -306,23 +306,39 @@
 
                     <article class="monitoring-card">
 
-                        <!-- =====================================
-                             CAR WASH INFORMATION
-                        ====================================== -->
+                     <!-- =====================================
+     CAR WASH INFORMATION
+====================================== -->
 
-                        <div class="monitoring-card-header">
+<div class="monitoring-card-header">
 
-                            <div>
+    <div class="car-wash-title">
 
-                                <h3>
-                                    {{ item.car_wash.name }}
-                                </h3>
+        <h3>
+            {{ item.car_wash.name }}
+        </h3>
 
-                                <p>
-                                    {{ item.car_wash.location }}
-                                </p>
+        <p>
+            {{ item.car_wash.location }}
+        </p>
 
-                            </div>
+    </div>
+
+    {% if item.car_wash.is_active %}
+
+        <span class="monitoring-status active">
+            Active
+        </span>
+
+    {% else %}
+
+        <span class="monitoring-status inactive">
+            Inactive
+        </span>
+
+    {% endif %}
+
+</div>
 
 
                             {% if item.car_wash.is_active %}

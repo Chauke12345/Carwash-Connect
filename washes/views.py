@@ -2,14 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.db.models import Sum
+from django.db.models import Sum, Count, Q
+from datetime import date
 
 from .models import (
     CarWash,
     StaffProfile,
+    CarWashPersonnel,
     Customer,
     Vehicle,
     WashService,
+    WashServicePrice,
     WashJob,
     PlatformPayment,
 )
@@ -122,19 +125,68 @@ def staff_logout(request):
 @login_required(login_url="staff_login")
 def dashboard(request):
 
+    # =====================================================
+    # GET LOGGED-IN STAFF PROFILE
+    # =====================================================
+
     try:
         staff_profile = request.user.carwash_staff_profile
-
     except StaffProfile.DoesNotExist:
         return redirect("staff_login")
 
-    # =====================================================
-    # CAR WASH
-    # =====================================================
-
     car_wash = staff_profile.car_wash
-
     today = timezone.localdate()
+
+    # =====================================================
+    # ACTIVE CAR WASH PERSONNEL
+    # =====================================================
+
+    personnel = (
+        CarWashPersonnel.objects
+        .filter(
+            car_wash=car_wash,
+            is_active=True
+        )
+        .order_by("name")
+    )
+
+    # =====================================================
+    # CAR WASH SERVICES AND SIZE PRICES
+    # =====================================================
+
+    services = (
+        WashService.objects
+        .filter(
+            car_wash=car_wash,
+            is_active=True
+        )
+        .prefetch_related("size_prices")
+        .order_by("name")
+    )
+
+    priced_services = []
+    extras = []
+
+    for service in services:
+
+        price_map = {
+            price.vehicle_size: price.price
+            for price in service.size_prices.all()
+        }
+
+        # Services with vehicle-size prices
+        if price_map:
+            priced_services.append({
+                "service": service,
+                "small": price_map.get("small"),
+                "medium": price_map.get("medium"),
+                "large": price_map.get("large"),
+                "extra_large": price_map.get("extra_large"),
+            })
+
+        # Services without vehicle-size prices are extras
+        else:
+            extras.append(service)
 
     # =====================================================
     # TODAY'S WASH JOBS
@@ -151,6 +203,9 @@ def dashboard(request):
             "vehicle",
             "service"
         )
+        .prefetch_related(
+            "assigned_personnel"
+        )
         .order_by("-created_at")
     )
 
@@ -161,16 +216,17 @@ def dashboard(request):
     active_jobs = jobs.exclude(
         status__in=[
             "collected",
-            "cancelled",
+            "cancelled"
         ]
     )
-
+        # =====================================================
+    # COMPLETED / COLLECTED JOBS
     # =====================================================
-    # COMPLETED JOBS
-    # =====================================================
 
-    completed_jobs = jobs.filter(
-        status="collected"
+    completed_jobs = (
+        jobs
+        .filter(status="collected")
+        .order_by("-collected_at")
     )
 
     # =====================================================
@@ -182,114 +238,106 @@ def dashboard(request):
         payment_status="paid"
     )
 
+  
     # =====================================================
-    # TOTAL REVENUE
+    # TODAY'S COUNTS
+    # =====================================================
+
+    # All jobs registered today, regardless of current status
+    registered_count = jobs.count()
+
+    waiting_count = jobs.filter(
+        status="waiting"
+    ).count()
+
+    washing_count = jobs.filter(
+        status="washing"
+    ).count()
+
+    finishing_count = jobs.filter(
+        status="finishing"
+    ).count()
+
+    ready_count = jobs.filter(
+        status="ready"
+    ).count()
+
+    completed_count = jobs.filter(
+        status="collected"
+    ).count()
+
+    # =====================================================
+    # TODAY'S REVENUE
+    # Only collected + paid jobs count as revenue
     # =====================================================
 
     today_revenue = (
         paid_jobs.aggregate(
             total=Sum("amount")
-        )["total"]
-        or 0
+        )["total"] or 0
     )
-
-    # =====================================================
-    # CASH REVENUE
-    # =====================================================
 
     cash_revenue = (
         paid_jobs
-        .filter(
-            payment_method="cash"
-        )
+        .filter(payment_method="cash")
         .aggregate(
             total=Sum("amount")
-        )["total"]
-        or 0
+        )["total"] or 0
     )
-
-    # =====================================================
-    # CARD REVENUE
-    # =====================================================
 
     card_revenue = (
         paid_jobs
-        .filter(
-            payment_method="card"
-        )
+        .filter(payment_method="card")
         .aggregate(
             total=Sum("amount")
-        )["total"]
-        or 0
+        )["total"] or 0
     )
-
-    # =====================================================
-    # EFT REVENUE
-    # =====================================================
 
     eft_revenue = (
         paid_jobs
-        .filter(
-            payment_method="eft"
-        )
+        .filter(payment_method="eft")
         .aggregate(
             total=Sum("amount")
-        )["total"]
-        or 0
+        )["total"] or 0
     )
-
-    # =====================================================
-    # OTHER REVENUE
-    # =====================================================
 
     other_revenue = (
         paid_jobs
-        .filter(
-            payment_method="other"
-        )
+        .filter(payment_method="other")
         .aggregate(
             total=Sum("amount")
-        )["total"]
-        or 0
+        )["total"] or 0
     )
 
     # =====================================================
-    # DASHBOARD DATA
+    # DASHBOARD CONTEXT
     # =====================================================
 
     context = {
 
+        # Car wash / logged-in staff
         "car_wash": car_wash,
         "staff_profile": staff_profile,
 
+        # Personnel
+        "personnel": personnel,
+
+        # Services / pricing
+        "priced_services": priced_services,
+        "extras": extras,
+
+        # Jobs
         "jobs": jobs,
         "active_jobs": active_jobs,
         "completed_jobs": completed_jobs,
 
-        # Queue counts
-        "registered_count": jobs.filter(
-            status="registered"
-        ).count(),
-
-        "waiting_count": jobs.filter(
-            status="waiting"
-        ).count(),
-
-        "washing_count": jobs.filter(
-            status="washing"
-        ).count(),
-
-        "finishing_count": jobs.filter(
-            status="finishing"
-        ).count(),
-
-        "ready_count": jobs.filter(
-            status="ready"
-        ).count(),
-
-        "completed_count": jobs.filter(
-            status="collected"
-        ).count(),
+        # Dashboard counters
+        "registered_count": registered_count,
+        "waiting_count": waiting_count,
+        "washing_count": washing_count,
+        "finishing_count": finishing_count,
+        "ready_count": ready_count,
+        "completed_count": completed_count,
 
         # Revenue
         "today_revenue": today_revenue,
@@ -305,10 +353,6 @@ def dashboard(request):
         context
     )
 
-
-# =========================================================
-# REGISTER VEHICLE
-# =========================================================
 
 @login_required(login_url="staff_login")
 def register_vehicle(request):
@@ -343,16 +387,12 @@ def register_vehicle(request):
             # =================================================
 
             customer_name = (
-                form.cleaned_data[
-                    "customer_name"
-                ]
+                form.cleaned_data["customer_name"]
                 .strip()
             )
 
             phone_number = (
-                form.cleaned_data[
-                    "phone_number"
-                ]
+                form.cleaned_data["phone_number"]
                 .strip()
             )
 
@@ -370,12 +410,10 @@ def register_vehicle(request):
                 )
             )
 
-            # Update customer name if necessary
             if (
                 not customer_created
                 and customer.name != customer_name
             ):
-
                 customer.name = customer_name
 
                 customer.save(
@@ -389,31 +427,27 @@ def register_vehicle(request):
             # =================================================
 
             registration_number = (
-                form.cleaned_data[
-                    "registration_number"
-                ]
+                form.cleaned_data["registration_number"]
                 .strip()
                 .upper()
             )
 
             vehicle_make = (
-                form.cleaned_data[
-                    "vehicle_make"
-                ]
+                form.cleaned_data["vehicle_make"]
                 .strip()
             )
 
             vehicle_model = (
-                form.cleaned_data[
-                    "vehicle_model"
-                ]
+                form.cleaned_data["vehicle_model"]
                 .strip()
             )
 
             vehicle_type = (
-                form.cleaned_data[
-                    "vehicle_type"
-                ]
+                form.cleaned_data["vehicle_type"]
+            )
+
+            vehicle_size = (
+                form.cleaned_data["vehicle_size"]
             )
 
             # =================================================
@@ -428,32 +462,60 @@ def register_vehicle(request):
                         "make": vehicle_make,
                         "model": vehicle_model,
                         "vehicle_type": vehicle_type,
+                        "vehicle_size": vehicle_size,
                     }
                 )
             )
 
-            # Update existing vehicle information
+            # =================================================
+            # UPDATE EXISTING VEHICLE
+            # =================================================
+
             if not vehicle_created:
 
                 vehicle.make = vehicle_make
                 vehicle.model = vehicle_model
                 vehicle.vehicle_type = vehicle_type
+                vehicle.vehicle_size = vehicle_size
 
                 vehicle.save(
                     update_fields=[
                         "make",
                         "model",
                         "vehicle_type",
+                        "vehicle_size",
                     ]
                 )
 
             # =================================================
-            # CREATE NEW WASH JOB
+            # SERVICE
             # =================================================
 
-            service = form.cleaned_data[
-                "service"
-            ]
+            service = form.cleaned_data["service"]
+
+            # =================================================
+            # SIZE-BASED SERVICE PRICE
+            # =================================================
+
+            service_price = (
+                WashServicePrice.objects
+                .filter(
+                    service=service,
+                    vehicle_size=vehicle_size
+                )
+                .first()
+            )
+
+            if service_price:
+                wash_amount = service_price.price
+            else:
+                # Compatibility for services that do not
+                # have size-based pricing.
+                wash_amount = service.price
+
+            # =================================================
+            # CREATE WASH JOB
+            # =================================================
 
             WashJob.objects.create(
                 car_wash=car_wash,
@@ -461,15 +523,11 @@ def register_vehicle(request):
                 vehicle=vehicle,
                 service=service,
                 status="waiting",
-                amount=service.price,
-                notes=form.cleaned_data[
-                    "notes"
-                ]
+                amount=wash_amount,
+                notes=form.cleaned_data["notes"]
             )
 
-            return redirect(
-                "dashboard"
-            )
+            return redirect("dashboard")
 
     # =====================================================
     # GET REQUEST
@@ -494,6 +552,51 @@ def register_vehicle(request):
         }
     )
 
+# =========================================================
+# ASSIGN PERSONNEL TO WASH JOB
+# =========================================================
+
+@login_required(login_url="staff_login")
+def assign_personnel(request, job_id):
+
+    try:
+        staff_profile = request.user.carwash_staff_profile
+
+    except StaffProfile.DoesNotExist:
+        return redirect("staff_login")
+
+    car_wash = staff_profile.car_wash
+
+    # Security:
+    # A car wash can only manage its own wash jobs.
+    job = get_object_or_404(
+        WashJob,
+        id=job_id,
+        car_wash=car_wash
+    )
+
+    if request.method == "POST":
+
+        personnel_ids = request.POST.getlist(
+            "personnel"
+        )
+
+        # Only personnel belonging to this car wash
+        # may be assigned.
+        selected_personnel = (
+            CarWashPersonnel.objects
+            .filter(
+                id__in=personnel_ids,
+                car_wash=car_wash,
+                is_active=True
+            )
+        )
+
+        job.assigned_personnel.set(
+            selected_personnel
+        )
+
+    return redirect("dashboard")
 
 # =========================================================
 # UPDATE WASH JOB STATUS
@@ -504,50 +607,35 @@ def update_job_status(request, job_id):
 
     try:
         staff_profile = request.user.carwash_staff_profile
-
     except StaffProfile.DoesNotExist:
         return redirect("staff_login")
 
     car_wash = staff_profile.car_wash
-
-    # Staff can only update jobs
-    # belonging to their own car wash.
-    job = get_object_or_404(
-        WashJob,
-        id=job_id,
-        car_wash=car_wash
-    )
+    job = get_object_or_404(WashJob, id=job_id, car_wash=car_wash)
 
     if request.method == "POST":
-
-        # =================================================
-        # STATUS WORKFLOW
-        # =================================================
-
         status_flow = {
             "waiting": "washing",
             "washing": "finishing",
             "finishing": "ready",
         }
-
-        next_status = status_flow.get(
-            job.status
-        )
+        next_status = status_flow.get(job.status)
 
         if next_status:
-
             job.status = next_status
+            update_fields = ["status", "updated_at"]
 
-            job.save(
-                update_fields=[
-                    "status"
-                ]
-            )
+            if next_status == "washing" and not job.started_at:
+                job.started_at = timezone.now()
+                update_fields.append("started_at")
 
-    return redirect(
-        "dashboard"
-    )
+            if next_status == "ready" and not job.completed_at:
+                job.completed_at = timezone.now()
+                update_fields.append("completed_at")
 
+            job.save(update_fields=update_fields)
+
+    return redirect("dashboard")
 
 # =========================================================
 # CONFIRM PAYMENT AND COLLECT
@@ -558,14 +646,10 @@ def confirm_payment(request, job_id):
 
     try:
         staff_profile = request.user.carwash_staff_profile
-
     except StaffProfile.DoesNotExist:
         return redirect("staff_login")
 
     car_wash = staff_profile.car_wash
-
-    # Only READY vehicles can be paid
-    # and marked as collected.
     job = get_object_or_404(
         WashJob,
         id=job_id,
@@ -574,36 +658,26 @@ def confirm_payment(request, job_id):
     )
 
     if request.method == "POST":
-
-        payment_method = request.POST.get(
-            "payment_method"
-        )
-
-        valid_methods = {
-            "cash",
-            "card",
-            "eft",
-            "other",
-        }
+        payment_method = request.POST.get("payment_method")
+        valid_methods = {"cash", "card", "eft", "other"}
 
         if payment_method in valid_methods:
-
             job.payment_method = payment_method
             job.payment_status = "paid"
             job.status = "collected"
 
-            job.save(
-                update_fields=[
-                    "payment_method",
-                    "payment_status",
-                    "status",
-                    "updated_at",
-                ]
-            )
+            if not job.collected_at:
+                job.collected_at = timezone.now()
 
-    return redirect(
-        "dashboard"
-    )
+            job.save(update_fields=[
+                "payment_method",
+                "payment_status",
+                "status",
+                "collected_at",
+                "updated_at",
+            ])
+
+    return redirect("dashboard")
 
 # =========================================================
 # MANAGER DAILY REPORT
@@ -757,7 +831,7 @@ def platform_monitoring(request):
     # EDVANCE TECH BILLING - R5 PER COMPLETED WASH
     # =====================================================
 
-    PLATFORM_FEE_PER_WASH = 5
+    PLATFORM_FEE_PER_WASH = 8
 
     # Paid and completed washes for the current month
     monthly_completed_jobs = WashJob.objects.filter(
@@ -1138,4 +1212,216 @@ def platform_login(request):
         {
             "error": error
         }
+    )
+
+# =========================================================
+# MANAGER MONTHLY REPORT
+# =========================================================
+
+@login_required(login_url="staff_login")
+def monthly_report(request):
+
+    try:
+        staff_profile = request.user.carwash_staff_profile
+    except StaffProfile.DoesNotExist:
+        return redirect("staff_login")
+
+    car_wash = staff_profile.car_wash
+
+    # Current month by default
+    today = timezone.localdate()
+
+    try:
+        selected_year = int(
+            request.GET.get("year", today.year)
+        )
+        selected_month = int(
+            request.GET.get("month", today.month)
+        )
+
+        if selected_month < 1 or selected_month > 12:
+            selected_month = today.month
+
+    except (TypeError, ValueError):
+        selected_year = today.year
+        selected_month = today.month
+
+    # =====================================================
+    # MONTH JOBS
+    # =====================================================
+
+    month_jobs = (
+        WashJob.objects
+        .filter(
+            car_wash=car_wash,
+            created_at__year=selected_year,
+            created_at__month=selected_month,
+        )
+        .select_related(
+            "customer",
+            "vehicle",
+            "service"
+        )
+        .prefetch_related(
+            "assigned_personnel"
+        )
+        .order_by("-created_at")
+    )
+
+    # =====================================================
+    # COMPLETED / PAID JOBS
+    # =====================================================
+
+    completed_jobs = month_jobs.filter(
+        status="collected"
+    )
+
+    paid_jobs = completed_jobs.filter(
+        payment_status="paid"
+    )
+
+    # =====================================================
+    # SUMMARY
+    # =====================================================
+
+    total_vehicles = month_jobs.count()
+
+    completed_count = completed_jobs.count()
+
+    total_revenue = (
+        paid_jobs.aggregate(
+            total=Sum("amount")
+        )["total"] or 0
+    )
+
+    cash_revenue = (
+        paid_jobs
+        .filter(payment_method="cash")
+        .aggregate(total=Sum("amount"))["total"]
+        or 0
+    )
+
+    card_revenue = (
+        paid_jobs
+        .filter(payment_method="card")
+        .aggregate(total=Sum("amount"))["total"]
+        or 0
+    )
+
+    eft_revenue = (
+        paid_jobs
+        .filter(payment_method="eft")
+        .aggregate(total=Sum("amount"))["total"]
+        or 0
+    )
+
+    other_revenue = (
+        paid_jobs
+        .filter(payment_method="other")
+        .aggregate(total=Sum("amount"))["total"]
+        or 0
+    )
+
+    average_transaction = 0
+
+    if paid_jobs.count():
+        average_transaction = (
+            total_revenue / paid_jobs.count()
+        )
+
+    # =====================================================
+    # SERVICE BREAKDOWN
+    # =====================================================
+
+    service_breakdown = (
+        completed_jobs
+        .values("service__name")
+        .annotate(
+            total=Count("id")
+        )
+        .order_by("-total")
+    )
+
+    # =====================================================
+    # VEHICLE SIZE BREAKDOWN
+    # =====================================================
+
+    vehicle_size_breakdown = (
+        completed_jobs
+        .values("vehicle__vehicle_size")
+        .annotate(
+            total=Count("id")
+        )
+        .order_by("-total")
+    )
+
+    # =====================================================
+    # PERSONNEL ACTIVITY
+    # =====================================================
+
+    personnel_breakdown = (
+        CarWashPersonnel.objects
+        .filter(
+            car_wash=car_wash,
+            is_active=True
+        )
+        .annotate(
+            completed_jobs_count=Count(
+                "wash_jobs",
+                filter=Q(
+                    wash_jobs__car_wash=car_wash,
+                    wash_jobs__status="collected",
+                    wash_jobs__created_at__year=selected_year,
+                    wash_jobs__created_at__month=selected_month,
+                ),
+                distinct=True
+            )
+        )
+        .order_by(
+            "-completed_jobs_count",
+            "name"
+        )
+    )
+
+    # =====================================================
+    # MONTH NAME
+    # =====================================================
+
+    month_name = date(
+        selected_year,
+        selected_month,
+        1
+    ).strftime("%B %Y")
+
+    context = {
+        "car_wash": car_wash,
+        "staff_profile": staff_profile,
+
+        "selected_year": selected_year,
+        "selected_month": selected_month,
+        "month_name": month_name,
+
+        "month_jobs": month_jobs,
+        "completed_jobs": completed_jobs,
+
+        "total_vehicles": total_vehicles,
+        "completed_count": completed_count,
+
+        "total_revenue": total_revenue,
+        "average_transaction": average_transaction,
+
+        "cash_revenue": cash_revenue,
+        "card_revenue": card_revenue,
+        "eft_revenue": eft_revenue,
+        "other_revenue": other_revenue,
+
+        "service_breakdown": service_breakdown,
+        "vehicle_size_breakdown": vehicle_size_breakdown,
+        "personnel_breakdown": personnel_breakdown,
+    }
+
+    return render(
+        request,
+        "washes/monthly_report.html",
+        context
     )

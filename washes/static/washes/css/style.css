@@ -17,15 +17,12 @@
     --green-hover: #15803d;
     --orange: #f59e0b;
     --red: #dc2626;
-
     --background: #f1f5f9;
     --surface: #ffffff;
     --surface-soft: #f8fafc;
-
     --text: #0f172a;
     --muted: #64748b;
     --border: #e2e8f0;
-
     --radius: 14px;
     --shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
 }
@@ -36,7 +33,6 @@ body {
     color: var(--text);
     line-height: 1.5;
 }
-
 
 /* =========================================================
    HEADER
@@ -51,7 +47,6 @@ body {
 .header-inner {
     max-width: 1200px;
     margin: auto;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -78,7 +73,6 @@ body {
     color: #cbd5e1;
     font-size: 14px;
 }
-
 
 /* =========================================================
    MAIN DASHBOARD
@@ -112,7 +106,6 @@ body {
     margin-bottom: 20px;
 }
 
-
 /* =========================================================
    STAT CARDS
 ========================================================= */
@@ -142,7 +135,6 @@ body {
     color: var(--muted);
     font-size: 13px;
 }
-
 
 /* =========================================================
    REVENUE
@@ -189,7 +181,6 @@ body {
     font-size: 18px;
 }
 
-
 /* =========================================================
    BUTTONS
 ========================================================= */
@@ -199,11 +190,9 @@ body {
     border: none;
     border-radius: 9px;
     padding: 11px 17px;
-
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
-
     cursor: pointer;
     transition: 0.2s ease;
 }
@@ -249,7 +238,6 @@ body {
     background: rgba(255, 255, 255, 0.2);
 }
 
-
 /* =========================================================
    QUEUE
 ========================================================= */
@@ -258,13 +246,6 @@ body {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
-}
-
-.job-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    background: white;
 }
 
 .job-card h3 {
@@ -281,7 +262,6 @@ body {
     border-top: 1px solid var(--border);
     margin: 18px 0;
 }
-
 
 /* =========================================================
    STATUS
@@ -315,7 +295,6 @@ body {
     background: #dcfce7;
     color: #166534;
 }
-
 
 /* =========================================================
    PAYMENT / WHATSAPP
@@ -367,7 +346,6 @@ body {
     width: auto;
 }
 
-
 /* =========================================================
    COMPLETED JOBS
 ========================================================= */
@@ -387,7 +365,6 @@ body {
     color: var(--muted);
     padding: 15px 0;
 }
-
 
 /* =========================================================
    FORMS
@@ -449,13 +426,11 @@ textarea:focus {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-
 /* =========================================================
    MOBILE
 ========================================================= */
 
 @media (max-width: 900px) {
-
     .stats-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -469,9 +444,7 @@ textarea:focus {
     }
 }
 
-
 @media (max-width: 600px) {
-
     .header-inner {
         align-items: flex-start;
         flex-direction: column;
@@ -540,18 +513,15 @@ textarea:focus {
 
 .login-page {
     min-height: 100vh;
-    background:
-        linear-gradient(
+    background: linear-gradient(
             135deg,
             #0f172a 0%,
             #1e293b 50%,
             #2563eb 100%
         );
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 25px;
 }
 
@@ -564,8 +534,7 @@ textarea:focus {
     background: white;
     border-radius: 18px;
     padding: 36px;
-    box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
 .login-brand {
@@ -623,11 +592,9 @@ textarea:focus {
     background: #fef2f2;
     border: 1px solid #fecaca;
     color: #991b1b;
-
     padding: 12px 14px;
     border-radius: 8px;
     margin-bottom: 20px;
-
     font-size: 14px;
 }
 
@@ -635,7 +602,6 @@ textarea:focus {
     text-align: center;
     margin-top: 25px;
     padding-top: 20px;
-
     border-top: 1px solid var(--border);
 }
 
@@ -650,13 +616,11 @@ textarea:focus {
     text-decoration: underline;
 }
 
-
 /* =========================================================
    LOGIN MOBILE
 ========================================================= */
 
 @media (max-width: 500px) {
-
     .login-page {
         padding: 15px;
     }
@@ -688,7 +652,6 @@ textarea:focus {
     max-width: 1200px;
     min-height: 74px;
     margin: auto;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -702,7 +665,6 @@ textarea:focus {
     text-decoration: none;
 }
 
-
 /* =========================================================
    HERO
 ========================================================= */
@@ -711,7 +673,6 @@ textarea:focus {
     max-width: 1200px;
     margin: auto;
     padding: 80px 5%;
-
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
@@ -720,16 +681,12 @@ textarea:focus {
 
 .hero-label {
     display: inline-block;
-
     background: #dbeafe;
     color: #1d4ed8;
-
     padding: 7px 12px;
     border-radius: 20px;
-
     font-size: 13px;
     font-weight: 700;
-
     margin-bottom: 20px;
 }
 
@@ -737,13 +694,11 @@ textarea:focus {
     font-size: clamp(38px, 5vw, 60px);
     line-height: 1.08;
     letter-spacing: -2px;
-
     margin-bottom: 22px;
 }
 
 .hero-content > p {
     max-width: 600px;
-
     color: var(--muted);
     font-size: 18px;
     line-height: 1.7;
@@ -757,7 +712,6 @@ textarea:focus {
     padding: 13px 23px;
 }
 
-
 /* =========================================================
    DASHBOARD PREVIEW
 ========================================================= */
@@ -765,19 +719,15 @@ textarea:focus {
 .hero-preview {
     background: var(--primary);
     color: white;
-
     border-radius: 20px;
     padding: 25px;
-
-    box-shadow:
-        0 30px 70px rgba(15, 23, 42, 0.22);
+    box-shadow: 0 30px 70px rgba(15, 23, 42, 0.22);
 }
 
 .preview-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     margin-bottom: 25px;
 }
 
@@ -800,13 +750,11 @@ textarea:focus {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-
     margin-bottom: 20px;
 }
 
 .preview-stats div {
     background: var(--primary-light);
-
     padding: 17px;
     border-radius: 10px;
 }
@@ -824,14 +772,11 @@ textarea:focus {
 .preview-job {
     background: white;
     color: var(--text);
-
     padding: 15px;
     border-radius: 10px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     gap: 15px;
     margin-top: 10px;
 }
@@ -844,7 +789,6 @@ textarea:focus {
     color: var(--muted);
     font-size: 13px;
 }
-
 
 /* =========================================================
    FEATURES
@@ -880,7 +824,6 @@ textarea:focus {
 .feature-grid {
     max-width: 1200px;
     margin: auto;
-
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 18px;
@@ -888,29 +831,22 @@ textarea:focus {
 
 .feature-card {
     background: white;
-
     border: 1px solid var(--border);
     border-radius: 14px;
-
     padding: 25px;
 }
 
 .feature-icon {
     width: 42px;
     height: 42px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     background: #dbeafe;
     color: var(--blue);
-
     border-radius: 10px;
-
     font-size: 13px;
     font-weight: 800;
-
     margin-bottom: 18px;
 }
 
@@ -925,7 +861,6 @@ textarea:focus {
     line-height: 1.6;
 }
 
-
 /* =========================================================
    HOME FOOTER
 ========================================================= */
@@ -933,7 +868,6 @@ textarea:focus {
 .home-footer {
     background: var(--primary);
     color: white;
-
     text-align: center;
     padding: 35px 20px;
 }
@@ -948,13 +882,11 @@ textarea:focus {
     margin-top: 4px;
 }
 
-
 /* =========================================================
    HOME RESPONSIVE
 ========================================================= */
 
 @media (max-width: 900px) {
-
     .home-hero {
         grid-template-columns: 1fr;
         padding-top: 55px;
@@ -965,9 +897,7 @@ textarea:focus {
     }
 }
 
-
 @media (max-width: 600px) {
-
     .home-header {
         padding: 0 4%;
     }
@@ -1081,15 +1011,11 @@ textarea:focus {
 .report-table th {
     background: var(--surface-soft);
     color: var(--muted);
-
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-
     text-align: left;
-
     padding: 13px 15px;
-
     border-bottom: 1px solid var(--border);
 }
 
@@ -1109,21 +1035,17 @@ textarea:focus {
     padding: 30px !important;
 }
 
-
 /* =========================================================
    REPORT MOBILE
 ========================================================= */
 
 @media (max-width: 800px) {
-
     .report-summary-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-
 @media (max-width: 500px) {
-
     .report-summary-grid {
         grid-template-columns: 1fr 1fr;
     }
@@ -1149,7 +1071,6 @@ textarea:focus {
 }
 
 @media (max-width: 600px) {
-
     .dashboard-actions {
         width: 100%;
         flex-direction: column;
@@ -1199,7 +1120,6 @@ textarea:focus {
     color: #cbd5e1;
 }
 
-
 /* =========================================================
    CAR WASH MONITORING CARDS
 ========================================================= */
@@ -1222,10 +1142,8 @@ textarea:focus {
     justify-content: space-between;
     align-items: flex-start;
     gap: 15px;
-
     padding-bottom: 17px;
     margin-bottom: 17px;
-
     border-bottom: 1px solid var(--border);
 }
 
@@ -1243,7 +1161,6 @@ textarea:focus {
     display: inline-block;
     padding: 5px 10px;
     border-radius: 20px;
-
     font-size: 12px;
     font-weight: 700;
 }
@@ -1283,13 +1200,10 @@ textarea:focus {
 
 .monitoring-revenue {
     margin-top: 15px;
-
     background: #eff6ff;
     border: 1px solid #bfdbfe;
     border-radius: 10px;
-
     padding: 15px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1305,13 +1219,11 @@ textarea:focus {
     font-size: 20px;
 }
 
-
 /* =========================================================
    MONITORING MOBILE
 ========================================================= */
 
 @media (max-width: 900px) {
-
     .platform-summary-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1321,9 +1233,7 @@ textarea:focus {
     }
 }
 
-
 @media (max-width: 600px) {
-
     .platform-summary-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1367,19 +1277,15 @@ textarea:focus {
 
 .platform-login-page {
     min-height: 100vh;
-
-    background:
-        linear-gradient(
+    background: linear-gradient(
             135deg,
             #020617 0%,
             #0f172a 50%,
             #1e3a8a 100%
         );
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 25px;
 }
 
@@ -1390,12 +1296,9 @@ textarea:focus {
 
 .platform-login-card {
     background: white;
-
     border-radius: 18px;
     padding: 38px;
-
-    box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
 }
 
 .platform-login-brand {
@@ -1405,17 +1308,13 @@ textarea:focus {
 
 .platform-admin-badge {
     display: inline-block;
-
     background: #dbeafe;
     color: #1d4ed8;
-
     padding: 6px 11px;
     border-radius: 20px;
-
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.8px;
-
     margin-bottom: 15px;
 }
 
@@ -1453,9 +1352,7 @@ textarea:focus {
 
 .platform-login-footer {
     text-align: center;
-
     border-top: 1px solid var(--border);
-
     margin-top: 27px;
     padding-top: 20px;
 }
@@ -1477,9 +1374,7 @@ textarea:focus {
     text-decoration: underline;
 }
 
-
 @media (max-width: 500px) {
-
     .platform-login-page {
         padding: 15px;
     }
@@ -1500,9 +1395,7 @@ textarea:focus {
 .billing-summary {
     margin-top: 18px;
     padding-top: 18px;
-
     border-top: 1px solid var(--border);
-
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
@@ -1537,15 +1430,11 @@ textarea:focus {
     color: #b91c1c;
 }
 
-
 @media (max-width: 600px) {
-
     .billing-summary {
         grid-template-columns: 1fr;
     }
 }
-
-
 
 /* =========================================================
    CARWASH CONNECT BRAND LOGO
@@ -1566,7 +1455,6 @@ textarea:focus {
 }
 
 @media (max-width: 600px) {
-
     .home-brand-icon {
         width: 58px;
         height: 58px;
@@ -1575,8 +1463,8 @@ textarea:focus {
 }
 
 /* MOBILE */
-@media (max-width: 600px) {
 
+@media (max-width: 600px) {
     .home-brand-icon {
         width: 42px;
         height: 42px;
@@ -1586,4 +1474,783 @@ textarea:focus {
     .home-brand span {
         font-size: 1rem;
     }
+}
+
+/* =========================================================
+   DASHBOARD OPERATIONS
+========================================================= */
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   CURRENT CAR WASH DASHBOARD
+   Matches dashboard.html
+========================================================= */
+
+/* =========================================================
+   APP / TOP HEADER
+========================================================= */
+
+.app-shell {
+    min-height: 100vh;
+    background: var(--background);
+}
+
+.topbar {
+    background: var(--primary);
+    color: #ffffff;
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.topbar h1 {
+    margin: 0 0 3px;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.topbar p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.topbar > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.topbar > div:last-child span {
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.topbar > div:last-child strong {
+    color: #ffffff;
+}
+
+.topbar .btn-secondary {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.topbar .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+/* =========================================================
+   DASHBOARD HEADING
+========================================================= */
+
+.dashboard-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.dashboard-heading h2 {
+    margin: 0 0 5px;
+    font-size: 26px;
+}
+
+.dashboard-heading p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.dashboard-heading > div:last-child {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 15px;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   DASHBOARD SUMMARY CARDS
+========================================================= */
+
+.dashboard-container > .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.dashboard-container > .stats-grid .stat-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: left;
+    box-shadow: var(--shadow);
+}
+
+.dashboard-container > .stats-grid .stat-card span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.dashboard-container > .stats-grid .stat-card strong {
+    display: block;
+    font-size: 25px;
+    color: var(--text);
+}
+
+/* =========================================================
+   SECTION HEADINGS
+========================================================= */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.section-heading h2 {
+    margin: 0 0 4px;
+    font-size: 21px;
+}
+
+.section-heading p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.section-heading > span {
+    display: inline-block;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 11px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   PRICE TABLE
+========================================================= */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* =========================================================
+   OPERATIONS
+========================================================= */
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.action-card {
+    display: block;
+    padding: 22px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+    min-height: 145px;
+}
+
+.action-card h3 {
+    margin: 0 0 9px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.action-card p {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.action-card small {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+/* =========================================================
+   PERSONNEL CARDS
+========================================================= */
+
+.dashboard-section .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.dashboard-section .stats-grid .stat-card {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: left;
+}
+
+.dashboard-section .stats-grid .stat-card span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.dashboard-section .stats-grid .stat-card strong {
+    display: block;
+    color: var(--text);
+    font-size: 17px;
+}
+
+/* =========================================================
+   LIVE QUEUE
+========================================================= */
+
+.job-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.job-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.job-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.job-card-header h3 {
+    margin: 0 0 4px;
+    font-size: 21px;
+}
+
+.job-card-header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.job-card-header .status-badge {
+    margin: 0;
+    background: #fef3c7;
+    color: #92400e;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   JOB DETAILS
+========================================================= */
+
+.job-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 20px;
+}
+
+.job-details p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.job-details strong {
+    color: var(--text);
+}
+
+/* =========================================================
+   PERSONNEL ASSIGNMENT
+========================================================= */
+
+.personnel-assignment {
+    margin-top: 18px;
+    padding-top: 17px;
+    border-top: 1px solid var(--border);
+}
+
+.personnel-assignment > p {
+    margin: 0 0 13px;
+    font-size: 14px;
+}
+
+.personnel-assignment form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: end;
+}
+
+.personnel-assignment form label {
+    grid-column: 1 / -1;
+    display: block;
+    margin: 0;
+    font-size: 13px;
+}
+
+.personnel-assignment select {
+    width: 100%;
+    margin: 0;
+}
+
+.personnel-assignment .btn {
+    min-height: 43px;
+}
+
+/* =========================================================
+   JOB ACTION BUTTONS
+========================================================= */
+
+.job-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.job-actions form {
+    margin: 0;
+}
+
+.job-actions .btn {
+    text-align: center;
+}
+
+.job-actions .btn-secondary {
+    background: #475569;
+    color: #ffffff;
+}
+
+.job-actions .btn-secondary:hover {
+    background: #334155;
+}
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.payment-section {
+    margin-top: 18px;
+    padding: 18px;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.payment-section h4 {
+    margin: 0 0 6px;
+    font-size: 17px;
+}
+
+.payment-section > p {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.payment-section form {
+    margin-top: 13px;
+}
+
+.payment-section label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+}
+
+.payment-section select {
+    margin-bottom: 11px;
+}
+
+.payment-section .btn {
+    width: 100%;
+}
+
+/* =========================================================
+   EMPTY QUEUE
+========================================================= */
+
+.empty-state {
+    padding: 35px 20px;
+    background: var(--surface-soft);
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.empty-state h3 {
+    margin: 0 0 7px;
+}
+
+.empty-state p {
+    margin: 0 0 18px;
+    color: var(--muted);
+}
+
+/* =========================================================
+   RESPONSIVE DASHBOARD
+========================================================= */
+
+@media (max-width: 1000px) {
+    .dashboard-container > .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .dashboard-section .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 800px) {
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .job-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-container > .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-section .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .topbar {
+        padding: 15px 4%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .topbar > div:last-child {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .dashboard-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-heading > div:last-child {
+        width: 100%;
+    }
+
+    .section-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-container > .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-section .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .job-details {
+        grid-template-columns: 1fr;
+    }
+
+    .personnel-assignment form {
+        grid-template-columns: 1fr;
+    }
+
+    .personnel-assignment form label {
+        grid-column: auto;
+    }
+
+    .personnel-assignment .btn {
+        width: 100%;
+    }
+
+    .job-actions {
+        flex-direction: column;
+    }
+
+    .job-actions form,
+    .job-actions .btn {
+        width: 100%;
+    }
+
+    .action-card {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 420px) {
+    .dashboard-container > .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-section .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   CLICKABLE OPERATION CARDS
+========================================================= */
+
+a.action-card {
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    z-index: 1;
+}
+
+a.action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.10);
+    border-color: #bfdbfe;
+}
+
+a.action-card h3,
+a.action-card p,
+a.action-card small {
+    pointer-events: none;
+}
+
+/* =========================================================
+   CAR WASH BILLING TITLE
+========================================================= */
+
+.car-wash-title {
+    padding: 10px 14px;
+    border-left: 5px solid #4f46e5;
+    background: #f4f6ff;
+    border-radius: 8px;
+}
+
+.car-wash-title h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.car-wash-title p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* =========================================================
+   DASHBOARD VIEW MORE BUTTONS
+========================================================= */
+
+.view-more-btn {
+    border: none;
+    background: transparent;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #2563eb;
+    transition: 0.2s ease;
+}
+
+.view-more-btn:hover {
+    background: #eff6ff;
+}
+
+/* =========================================================
+   COLLAPSIBLE DASHBOARD CONTENT
+========================================================= */
+
+.dashboard-collapsible {
+    margin-top: 20px;
+}
+
+/* =========================================================
+   PERSONNEL
+========================================================= */
+
+.personnel-summary {
+    margin-bottom: 15px;
+}
+
+.personnel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.personnel-card {
+    padding: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.personnel-role {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* =========================================================
+   EXTRAS
+========================================================= */
+
+.extras-list {
+    margin-top: 25px;
+}
+
+.extras-list h3 {
+    margin-bottom: 12px;
+}
+
+.extra-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+    .section-heading {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .view-more-btn {
+        white-space: nowrap;
+    }
+
+    .personnel-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   PRICE LIST TABLE
+========================================================= */
+
+.price-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.price-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.price-table th,
+.price-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+.price-table th {
+    background: #f8fafc;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #475569;
+}
+
+.price-table td {
+    font-size: 14px;
+    color: #0f172a;
+}
+
+.price-table th:first-child,
+.price-table td:first-child {
+    width: 34%;
+}
+
+.price-table th:not(:first-child),
+.price-table td:not(:first-child) {
+    width: 16.5%;
+}
+
+.price-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================================================
+   WHATSAPP CUSTOMER BUTTON
+   Green WhatsApp action for customer notifications
+========================================================= */
+
+.whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 17px;
+    border: none;
+    border-radius: 9px;
+    background: #16a34a;
+    color: #ffffff !important;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.whatsapp-btn:hover {
+    background: #15803d;
+    color: #ffffff !important;
+    transform: translateY(-1px);
 }
