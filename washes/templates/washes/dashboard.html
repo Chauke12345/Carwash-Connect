@@ -704,7 +704,7 @@
     <div class="job-actions">
 
         <a
-            href="https://wa.me/{{ job.vehicle.customer.phone_number|cut:'+' }}?text=Hello%20{{ job.vehicle.customer }}%2C%20your%20vehicle%20{{ job.vehicle }}%20has%20been%20completed%20and%20is%20ready%20for%20collection%20at%20{{ job.car_wash }}.%20Service%3A%20{{ job.service }}.%20Amount%3A%20R{{ job.amount }}.%20Thank%20you."
+            href="https://wa.me/{{ job.vehicle.customer.phone_number|cut:'+' }}?text=Hello%20{{ job.vehicle.customer }}%2C%20your%20{{ job.vehicle.make }}%20{{ job.vehicle.model }}%20%28Registration%3A%20{{ job.vehicle.registration_number }}%29%20has%20been%20completed%20and%20is%20ready%20for%20collection%20at%20{{ job.car_wash }}.%20Service%3A%20{{ job.service }}.%20Amount%3A%20R{{ job.amount }}.%20Thank%20you."
             target="_blank"
             rel="noopener"
             class="btn btn-whatsapp"
