@@ -828,32 +828,18 @@ def platform_monitoring(request):
     ).count()
 
         # =====================================================
-    # EDVANCE TECH BILLING - R5 PER COMPLETED WASH
     # =====================================================
-
-    PLATFORM_FEE_PER_WASH = 8
-
-    # Paid and completed washes for the current month
-    monthly_completed_jobs = WashJob.objects.filter(
-        created_at__year=today.year,
-        created_at__month=today.month,
-        status="collected",
-        payment_status="paid",
-        car_wash__is_active=True,
-    )
-
-    monthly_completed_count = monthly_completed_jobs.count()
-
-    # =====================================================
-    # PLATFORM FEES GENERATED
+    # EDVANCE TECH FIXED MONTHLY BILLING
     # =====================================================
 
     expected_invoice_revenue = (
-        monthly_completed_count
-        * PLATFORM_FEE_PER_WASH
+        car_washes.filter(
+            is_active=True
+        ).aggregate(
+            total=Sum("monthly_fee")
+        )["total"] or 0
     )
 
-    # =====================================================
     # PAYMENTS RECEIVED BY EDVANCE TECH THIS MONTH
     # =====================================================
 
@@ -960,22 +946,14 @@ def platform_monitoring(request):
 
         # =================================================
         # EDVANCE TECH MONTHLY BILLING
-        # R5 PER COMPLETED + PAID WASH
         # =================================================
-
-        monthly_completed_for_car_wash = (
-            monthly_completed_jobs.filter(
-                car_wash=car_wash
-            ).count()
-        )
-
-                # =================================================
-        # PLATFORM FEES FOR THIS CAR WASH
+        # FIXED MONTHLY SUBSCRIPTION FOR THIS CAR WASH
         # =================================================
 
         platform_fee_generated = (
-            monthly_completed_for_car_wash
-            * PLATFORM_FEE_PER_WASH
+            car_wash.monthly_fee
+            if car_wash.is_active
+            else 0
         )
 
         platform_fee_paid = (
@@ -1013,8 +991,7 @@ def platform_monitoring(request):
             "staff_count": staff_count,
 
                      # Edvance Tech billing
-            "monthly_completed_jobs": monthly_completed_for_car_wash,
-            "fee_per_wash": PLATFORM_FEE_PER_WASH,
+            "monthly_fee": car_wash.monthly_fee,
             "platform_fee_generated": platform_fee_generated,
             "platform_fee_paid": platform_fee_paid,
             "platform_fee_due": platform_fee_due,
@@ -1425,3 +1402,5 @@ def monthly_report(request):
         "washes/monthly_report.html",
         context
     )
+
+

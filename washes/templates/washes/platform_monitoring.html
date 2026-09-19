@@ -218,7 +218,7 @@
                     <h2>Edvance Tech Billing</h2>
 
                     <p class="form-description">
-    R8 platform fee for every completed wash
+    Fixed monthly subscription fees for active connected car washes
     during the current month.
 </p>
 
@@ -414,11 +414,11 @@
     <div>
 
         <span>
-            Completed This Month
+            Monthly Subscription
         </span>
 
         <strong>
-            {{ item.monthly_completed_jobs }}
+            R{{ item.monthly_fee|floatformat:2 }}
         </strong>
 
     </div>
@@ -427,11 +427,11 @@
     <div>
 
         <span>
-            Fee Per Completed Wash
+            Billing Model
         </span>
 
         <strong>
-            R{{ item.fee_per_wash|floatformat:2 }}
+            Fixed Monthly
         </strong>
 
     </div>
@@ -440,7 +440,7 @@
     <div>
 
         <span>
-            Platform Fees Generated
+            Monthly Fee
         </span>
 
         <strong>
@@ -466,7 +466,7 @@
     <div>
 
         <span>
-            Platform Fee Due
+            Amount Due
         </span>
 
         <strong>
