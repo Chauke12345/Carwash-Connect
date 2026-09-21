@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +45,7 @@
                     href="{% url 'dashboard' %}"
                     class="btn btn-logout"
                 >
-                    ← Back to Dashboard
+                    â† Back to Dashboard
                 </a>
 
             </div>
@@ -303,6 +303,83 @@
 
     </main>
 
+
+{{ service_prices|json_script:"service-price-data" }}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const vehicleSizeSelect = document.getElementById("id_vehicle_size");
+    const serviceSelect = document.getElementById("id_service");
+    const priceDataElement = document.getElementById("service-price-data");
+
+    if (!vehicleSizeSelect || !serviceSelect || !priceDataElement) {
+        return;
+    }
+
+    const servicePrices = JSON.parse(priceDataElement.textContent);
+
+    const originalServiceNames = {};
+
+    Array.from(serviceSelect.options).forEach(function (option) {
+        if (option.value) {
+            originalServiceNames[option.value] = option.textContent.trim();
+        }
+    });
+
+    function updateServicePrices() {
+
+        const selectedSize = vehicleSizeSelect.value;
+
+        Array.from(serviceSelect.options).forEach(function (option) {
+
+            if (!option.value) {
+                return;
+            }
+
+            const serviceId = option.value;
+            const originalName = originalServiceNames[serviceId];
+            const serviceData = servicePrices[serviceId];
+
+            if (
+                !selectedSize ||
+                !serviceData ||
+                !serviceData[selectedSize]
+            ) {
+                option.textContent = originalName + " — Not available";
+                return;
+            }
+
+            const priceInfo = serviceData[selectedSize];
+
+            if (priceInfo.quote_required) {
+
+                option.textContent = originalName + " — SQ";
+
+            } else if (priceInfo.price !== null) {
+
+                const amount = Number(priceInfo.price).toFixed(2);
+
+                option.textContent =
+                    originalName + " — R" + amount;
+
+            } else {
+
+                option.textContent =
+                    originalName + " — Not available";
+            }
+        });
+    }
+
+    vehicleSizeSelect.addEventListener(
+        "change",
+        updateServicePrices
+    );
+
+    updateServicePrices();
+
+});
+</script>
 </body>
 
 </html>

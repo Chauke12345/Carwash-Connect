@@ -1,4 +1,4 @@
-from django import forms
+﻿from django import forms
 
 from .models import WashService, Vehicle
 
@@ -136,6 +136,17 @@ class VehicleRegistrationForm(forms.Form):
                     ("14_seater", "14 Seater"),
                     ("bigger", "Bigger"),
                 ]
+            elif car_wash.slug == "iscars-autowash":
+                self.fields["vehicle_size"].choices = [
+                    ("sedan", "Sedan / Hatch"),
+                    ("mini_suv", "Mini SUV"),
+                    ("suv", "SUV"),
+                    ("mpv", "MPV"),
+                    ("taxi", "Taxi"),
+                    ("bike", "Bike"),
+                    ("trailer", "Trailer"),
+                ]
+
             else:
                 # Keep the existing categories for all other car washes.
                 self.fields["vehicle_size"].choices = [

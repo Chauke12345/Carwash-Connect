@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+﻿from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -178,6 +178,16 @@ def dashboard(request):
             ("14_seater", "14 Seater"),
             ("bigger", "Bigger"),
         ]
+    elif car_wash.slug == "iscars-autowash":
+        price_columns = [
+            ("sedan", "Sedan / Hatch"),
+            ("mini_suv", "Mini SUV"),
+            ("suv", "SUV"),
+            ("mpv", "MPV"),
+            ("taxi", "Taxi"),
+            ("bike", "Bike"),
+            ("trailer", "Trailer"),
+        ]
     else:
         price_columns = [
             ("small", "Small"),
@@ -199,13 +209,13 @@ def dashboard(request):
                 service_price = size_prices.get(size_key)
 
                 if service_price is None:
-                    display_value = "—"
+                    display_value = "â€”"
                 elif service_price.quote_required:
                     display_value = "SQ"
                 elif service_price.price is not None:
                     display_value = f"R{service_price.price:.2f}"
                 else:
-                    display_value = "—"
+                    display_value = "â€”"
 
                 display_prices.append({
                     "key": size_key,
@@ -404,6 +414,37 @@ def register_vehicle(request):
     car_wash = staff_profile.car_wash
 
     # =====================================================
+    # SERVICE PRICE DATA
+    # =====================================================
+
+    service_prices = {}
+
+    price_records = (
+        WashServicePrice.objects
+        .filter(
+            service__car_wash=car_wash,
+            service__is_active=True,
+        )
+        .select_related("service")
+    )
+
+    for price_record in price_records:
+
+        service_id = str(price_record.service_id)
+
+        if service_id not in service_prices:
+            service_prices[service_id] = {}
+
+        service_prices[service_id][price_record.vehicle_size] = {
+            "price": (
+                str(price_record.price)
+                if price_record.price is not None
+                else None
+            ),
+            "quote_required": price_record.quote_required,
+        }
+
+    # =====================================================
     # POST REQUEST
     # =====================================================
 
@@ -559,6 +600,7 @@ def register_vehicle(request):
                         {
                             "form": form,
                             "car_wash": car_wash,
+                            "service_prices": service_prices,
                         }
                     )
 
@@ -613,12 +655,14 @@ def register_vehicle(request):
     # DISPLAY FORM
     # =====================================================
 
+
     return render(
         request,
         "washes/register_vehicle.html",
         {
             "form": form,
             "car_wash": car_wash,
+            "service_prices": service_prices,
         }
     )
 
@@ -1516,5 +1560,7 @@ def monthly_report(request):
         "washes/monthly_report.html",
         context
     )
+
+
 
 
