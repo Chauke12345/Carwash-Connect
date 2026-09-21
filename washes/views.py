@@ -1,4 +1,4 @@
-﻿from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -209,13 +209,13 @@ def dashboard(request):
                 service_price = size_prices.get(size_key)
 
                 if service_price is None:
-                    display_value = "â€”"
+                    display_value = "\u2014"
                 elif service_price.quote_required:
                     display_value = "SQ"
                 elif service_price.price is not None:
                     display_value = f"R{service_price.price:.2f}"
                 else:
-                    display_value = "â€”"
+                    display_value = "\u2014"
 
                 display_prices.append({
                     "key": size_key,
