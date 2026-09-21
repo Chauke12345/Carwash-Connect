@@ -209,10 +209,20 @@ class WashService(models.Model):
 class WashServicePrice(models.Model):
 
     VEHICLE_SIZE_CHOICES = [
+        # Existing categories
         ("small", "Small"),
         ("medium", "Medium"),
         ("large", "Large"),
         ("extra_large", "Extra Large"),
+
+        # Auto Sparkles categories
+        ("sedan", "Sedan"),
+        ("suv", "SUV"),
+        ("bakkie_s_cab", "Bakkie S/Cab"),
+        ("bakkie_d_cab", "Bakkie D/Cab"),
+        ("combi", "Combi"),
+        ("14_seater", "14 Seater"),
+        ("bigger", "Bigger"),
     ]
 
     service = models.ForeignKey(
@@ -228,7 +238,13 @@ class WashServicePrice(models.Model):
 
     price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+
+    quote_required = models.BooleanField(
+        default=False
     )
 
     class Meta:
@@ -243,10 +259,17 @@ class WashServicePrice(models.Model):
         ]
 
     def __str__(self):
+        if self.quote_required:
+            price_display = "SQ"
+        elif self.price is not None:
+            price_display = f"R{self.price}"
+        else:
+            price_display = "No Price"
+
         return (
             f"{self.service.name} - "
             f"{self.get_vehicle_size_display()} - "
-            f"R{self.price}"
+            f"{price_display}"
         )
 
 
@@ -316,10 +339,20 @@ class Vehicle(models.Model):
     ]
 
     VEHICLE_SIZE_CHOICES = [
+        # Existing categories
         ("small", "Small"),
         ("medium", "Medium"),
         ("large", "Large"),
         ("extra_large", "Extra Large"),
+
+        # Auto Sparkles categories
+        ("sedan", "Sedan"),
+        ("suv", "SUV"),
+        ("bakkie_s_cab", "Bakkie S/Cab"),
+        ("bakkie_d_cab", "Bakkie D/Cab"),
+        ("combi", "Combi"),
+        ("14_seater", "14 Seater"),
+        ("bigger", "Bigger"),
     ]
 
     customer = models.ForeignKey(

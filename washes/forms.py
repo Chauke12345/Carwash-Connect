@@ -124,6 +124,27 @@ class VehicleRegistrationForm(forms.Form):
         # currently logged-in car wash.
         if car_wash:
 
+            # Vehicle-size options are specific to each car wash.
+            # Auto Sparkles uses the categories from its own price board.
+            if car_wash.slug == "auto-sparkles-car-wash":
+                self.fields["vehicle_size"].choices = [
+                    ("sedan", "Sedan"),
+                    ("suv", "SUV"),
+                    ("bakkie_s_cab", "Bakkie S/Cab"),
+                    ("bakkie_d_cab", "Bakkie D/Cab"),
+                    ("combi", "Combi"),
+                    ("14_seater", "14 Seater"),
+                    ("bigger", "Bigger"),
+                ]
+            else:
+                # Keep the existing categories for all other car washes.
+                self.fields["vehicle_size"].choices = [
+                    ("small", "Small"),
+                    ("medium", "Medium"),
+                    ("large", "Large"),
+                    ("extra_large", "Extra Large"),
+                ]
+
             self.fields["service"].queryset = (
                 WashService.objects
                 .filter(

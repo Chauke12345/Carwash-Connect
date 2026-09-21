@@ -158,10 +158,11 @@
                 <thead>
                     <tr>
                         <th>Service</th>
-                        <th>Small</th>
-                        <th>Medium</th>
-                        <th>Large</th>
-                        <th>Extra Large</th>
+
+                        {% for size_key, size_label in price_columns %}
+                            <th>{{ size_label }}</th>
+                        {% endfor %}
+
                     </tr>
                 </thead>
 
@@ -169,55 +170,29 @@
 
                     {% for item in priced_services %}
 
-                    <tr>
+                        <tr>
 
-                        <td>
-                            <strong>
-                                {{ item.service.name }}
-                            </strong>
-                        </td>
+                            <td>
+                                <strong>
+                                    {{ item.service.name }}
+                                </strong>
+                            </td>
 
-                        <td>
-                            {% if item.small %}
-                                R{{ item.small|floatformat:2 }}
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
+                            {% for price in item.prices %}
+                                <td>
+                                    {{ price.value }}
+                                </td>
+                            {% endfor %}
 
-                        <td>
-                            {% if item.medium %}
-                                R{{ item.medium|floatformat:2 }}
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {% if item.large %}
-                                R{{ item.large|floatformat:2 }}
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {% if item.extra_large %}
-                                R{{ item.extra_large|floatformat:2 }}
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
-
-                    </tr>
+                        </tr>
 
                     {% empty %}
 
-                    <tr>
-                        <td colspan="5">
-                            No priced services available.
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="8">
+                                No priced services available.
+                            </td>
+                        </tr>
 
                     {% endfor %}
 

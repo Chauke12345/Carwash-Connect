@@ -167,25 +167,58 @@ def dashboard(request):
     priced_services = []
     extras = []
 
-    for service in services:
+    # Vehicle-size columns shown on this car wash dashboard.
+    if car_wash.slug == "auto-sparkles-car-wash":
+        price_columns = [
+            ("sedan", "Sedan"),
+            ("suv", "SUV"),
+            ("bakkie_s_cab", "Bakkie S/Cab"),
+            ("bakkie_d_cab", "Bakkie D/Cab"),
+            ("combi", "Combi"),
+            ("14_seater", "14 Seater"),
+            ("bigger", "Bigger"),
+        ]
+    else:
+        price_columns = [
+            ("small", "Small"),
+            ("medium", "Medium"),
+            ("large", "Large"),
+            ("extra_large", "Extra Large"),
+        ]
 
-        price_map = {
-            price.vehicle_size: price.price
+    for service in services:
+        size_prices = {
+            price.vehicle_size: price
             for price in service.size_prices.all()
         }
 
-        # Services with vehicle-size prices
-        if price_map:
+        if size_prices:
+            display_prices = []
+
+            for size_key, size_label in price_columns:
+                service_price = size_prices.get(size_key)
+
+                if service_price is None:
+                    display_value = "—"
+                elif service_price.quote_required:
+                    display_value = "SQ"
+                elif service_price.price is not None:
+                    display_value = f"R{service_price.price:.2f}"
+                else:
+                    display_value = "—"
+
+                display_prices.append({
+                    "key": size_key,
+                    "label": size_label,
+                    "value": display_value,
+                })
+
             priced_services.append({
                 "service": service,
-                "small": price_map.get("small"),
-                "medium": price_map.get("medium"),
-                "large": price_map.get("large"),
-                "extra_large": price_map.get("extra_large"),
+                "prices": display_prices,
             })
-
-        # Services without vehicle-size prices are extras
         else:
+            # Services without vehicle-size prices remain extras.
             extras.append(service)
 
     # =====================================================
@@ -324,6 +357,7 @@ def dashboard(request):
 
         # Services / pricing
         "priced_services": priced_services,
+        "price_columns": price_columns,
         "extras": extras,
 
         # Jobs
@@ -506,8 +540,44 @@ def register_vehicle(request):
                 .first()
             )
 
+            has_size_pricing = (
+                WashServicePrice.objects
+                .filter(service=service)
+                .exists()
+            )
+
             if service_price:
+
+                if service_price.quote_required:
+                    form.add_error(
+                        "service",
+                        "This service requires a Special Quote (SQ) for the selected vehicle size."
+                    )
+                    return render(
+                        request,
+                        "washes/register_vehicle.html",
+                        {
+                            "form": form,
+                            "car_wash": car_wash,
+                        }
+                    )
+
                 wash_amount = service_price.price
+
+            elif has_size_pricing:
+                form.add_error(
+                    "service",
+                    "No price is configured for this service and vehicle size."
+                )
+                return render(
+                    request,
+                    "washes/register_vehicle.html",
+                    {
+                        "form": form,
+                        "car_wash": car_wash,
+                    }
+                )
+
             else:
                 # Compatibility for services that do not
                 # have size-based pricing.
