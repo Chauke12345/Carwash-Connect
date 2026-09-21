@@ -279,7 +279,7 @@
 
 
         <!-- =================================================
-             CAR WASH BILLING
+             SYSTEM USAGE MONITORING
         ================================================== -->
 
         <section class="dashboard-section">
@@ -287,14 +287,12 @@
             <div class="section-header">
 
                 <div>
-
-                    <h2>Car Wash Billing</h2>
+                    <h2>System Usage Monitoring</h2>
 
                     <p class="form-description">
-                        Monthly usage billing based on completed
-                        washes for each connected car wash.
+                        Monitor how each connected car wash is using
+                        CarWash Connect and view monthly platform billing.
                     </p>
-
                 </div>
 
             </div>
@@ -306,40 +304,21 @@
 
                     <article class="monitoring-card">
 
-                     <!-- =====================================
-     CAR WASH INFORMATION
-====================================== -->
+                        <!-- CAR WASH INFORMATION -->
 
-<div class="monitoring-card-header">
+                        <div class="monitoring-card-header">
 
-    <div class="car-wash-title">
+                            <div class="car-wash-title">
 
-        <h3>
-            {{ item.car_wash.name }}
-        </h3>
+                                <h3>
+                                    {{ item.car_wash.name }}
+                                </h3>
 
-        <p>
-            {{ item.car_wash.location }}
-        </p>
+                                <p>
+                                    {{ item.car_wash.location }}
+                                </p>
 
-    </div>
-
-    {% if item.car_wash.is_active %}
-
-        <span class="monitoring-status active">
-            Active
-        </span>
-
-    {% else %}
-
-        <span class="monitoring-status inactive">
-            Inactive
-        </span>
-
-    {% endif %}
-
-</div>
-
+                            </div>
 
                             {% if item.car_wash.is_active %}
 
@@ -365,123 +344,181 @@
                         <div class="monitoring-stats">
 
                             <div>
-
-                                <span>
-                                    Vehicles Today
-                                </span>
+                                <span>Vehicles Today</span>
 
                                 <strong>
                                     {{ item.total_jobs }}
                                 </strong>
-
                             </div>
 
 
                             <div>
-
-                                <span>
-                                    Completed Today
-                                </span>
+                                <span>Completed Today</span>
 
                                 <strong>
                                     {{ item.completed_jobs }}
                                 </strong>
+                            </div>
 
+
+                            <div>
+                                <span>Active Queue</span>
+
+                                <strong>
+                                    {{ item.active_jobs }}
+                                </strong>
                             </div>
 
                         </div>
 
 
                         <!-- =====================================
-                             CAR WASH BUSINESS REVENUE
+                             LAST SYSTEM ACTIVITY
                         ====================================== -->
 
                         <div class="monitoring-revenue">
 
                             <span>
-                                Car Wash Transaction Value
+                                Last System Activity
                             </span>
 
                             <strong>
-                                R{{ item.transaction_value|floatformat:2 }}
+                                {% if item.last_activity %}
+                                    {{ item.last_activity|date:"d M Y, H:i" }}
+                                {% else %}
+                                    Never Used
+                                {% endif %}
                             </strong>
 
                         </div>
 
 
+                        <!-- =====================================
+                             MONTHLY SYSTEM USAGE
+                        ====================================== -->
+
                         <div class="billing-summary">
 
-    <div>
+                            <div>
+                                <span>
+                                    Vehicles This Month
+                                </span>
 
-        <span>
-            Monthly Subscription
-        </span>
-
-        <strong>
-            R{{ item.monthly_fee|floatformat:2 }}
-        </strong>
-
-    </div>
+                                <strong>
+                                    {{ item.monthly_jobs }}
+                                </strong>
+                            </div>
 
 
-    <div>
+                            <div>
+                                <span>
+                                    Completed This Month
+                                </span>
 
-        <span>
-            Billing Model
-        </span>
-
-        <strong>
-            Fixed Monthly
-        </strong>
-
-    </div>
+                                <strong>
+                                    {{ item.monthly_completed_jobs }}
+                                </strong>
+                            </div>
 
 
-    <div>
+                            <div>
+                                <span>
+                                    Monthly Transaction Value
+                                </span>
 
-        <span>
-            Monthly Fee
-        </span>
-
-        <strong>
-            R{{ item.platform_fee_generated|floatformat:2 }}
-        </strong>
-
-    </div>
+                                <strong>
+                                    R{{ item.monthly_transaction_value|floatformat:2 }}
+                                </strong>
+                            </div>
 
 
-    <div>
+                            <div>
+                                <span>
+                                    Active Staff
+                                </span>
 
-        <span>
-            Paid to Edvance Tech
-        </span>
+                                <strong>
+                                    {{ item.staff_count }}
+                                </strong>
+                            </div>
 
-        <strong>
-            R{{ item.platform_fee_paid|floatformat:2 }}
-        </strong>
-
-    </div>
+                        </div>
 
 
-    <div>
+                        <!-- =====================================
+                             EDVANCE TECH BILLING
+                        ====================================== -->
 
-        <span>
-            Amount Due
-        </span>
+                        <div class="billing-summary">
 
-        <strong>
-            R{{ item.platform_fee_due|floatformat:2 }}
-        </strong>
+                            <div>
+                                <span>
+                                    Monthly Subscription
+                                </span>
 
-    </div>
+                                <strong>
+                                    R{{ item.monthly_fee|floatformat:2 }}
+                                </strong>
+                            </div>
 
-</div>
+
+                            <div>
+                                <span>
+                                    Billing Model
+                                </span>
+
+                                <strong>
+                                    Fixed Monthly
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    Paid to Edvance Tech
+                                </span>
+
+                                <strong>
+                                    R{{ item.platform_fee_paid|floatformat:2 }}
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    Amount Due
+                                </span>
+
+                                <strong>
+                                    R{{ item.platform_fee_due|floatformat:2 }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             INSPECT CAR WASH
+                        ====================================== -->
+
+                        <div class="monitoring-actions">
+
+                            <a
+                                href="{% url 'platform_car_wash_detail' item.car_wash.id %}"
+                                class="btn btn-secondary"
+                            >
+                                View Car Wash
+                            </a>
+
+                        </div>
+
+                    </article>
 
                 {% empty %}
 
-                    <p>
+                    <div class="empty-state">
                         No car washes registered.
-                    </p>
+                    </div>
 
                 {% endfor %}
 

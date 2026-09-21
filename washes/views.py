@@ -976,7 +976,7 @@ def platform_monitoring(request):
     for car_wash in car_washes:
 
         # =================================================
-        # TODAY'S OPERATIONS FOR THIS CAR WASH
+        # TODAY'S OPERATIONS
         # =================================================
 
         wash_jobs = today_jobs.filter(
@@ -998,11 +998,51 @@ def platform_monitoring(request):
             payment_status="paid"
         )
 
-        # Today's car wash transaction value
         transaction_value = (
             wash_paid.aggregate(
                 total=Sum("amount")
             )["total"] or 0
+        )
+
+        # =================================================
+        # MONTHLY SYSTEM USAGE
+        # =================================================
+
+        month_jobs = WashJob.objects.filter(
+            car_wash=car_wash,
+            created_at__year=today.year,
+            created_at__month=today.month,
+        )
+
+        month_completed = month_jobs.filter(
+            status="collected"
+        )
+
+        month_paid = month_completed.filter(
+            payment_status="paid"
+        )
+
+        monthly_transaction_value = (
+            month_paid.aggregate(
+                total=Sum("amount")
+            )["total"] or 0
+        )
+
+        # =================================================
+        # LAST SYSTEM ACTIVITY
+        # =================================================
+
+        last_job = (
+            WashJob.objects
+            .filter(car_wash=car_wash)
+            .order_by("-created_at")
+            .first()
+        )
+
+        last_activity = (
+            last_job.created_at
+            if last_job
+            else None
         )
 
         # =================================================
@@ -1016,8 +1056,6 @@ def platform_monitoring(request):
 
         # =================================================
         # EDVANCE TECH MONTHLY BILLING
-        # =================================================
-        # FIXED MONTHLY SUBSCRIPTION FOR THIS CAR WASH
         # =================================================
 
         platform_fee_generated = (
@@ -1041,6 +1079,7 @@ def platform_monitoring(request):
             - platform_fee_paid,
             0
         )
+
         # =================================================
         # DATA SENT TO PLATFORM DASHBOARD
         # =================================================
@@ -1049,26 +1088,31 @@ def platform_monitoring(request):
 
             "car_wash": car_wash,
 
-            # Today's operations
+            # Today's activity
             "total_jobs": wash_jobs.count(),
             "active_jobs": wash_active.count(),
             "completed_jobs": wash_completed.count(),
-
-            # Today's car wash revenue
             "transaction_value": transaction_value,
+
+            # Monthly usage
+            "monthly_jobs": month_jobs.count(),
+            "monthly_completed_jobs": month_completed.count(),
+            "monthly_transaction_value": monthly_transaction_value,
+
+            # Last usage
+            "last_activity": last_activity,
 
             # Staff
             "staff_count": staff_count,
 
-                     # Edvance Tech billing
+            # EDVANCE TECH billing
             "monthly_fee": car_wash.monthly_fee,
             "platform_fee_generated": platform_fee_generated,
             "platform_fee_paid": platform_fee_paid,
             "platform_fee_due": platform_fee_due,
         })
 
-    
-    # =====================================================
+
     # CONTEXT
     # =====================================================
 
