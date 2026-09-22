@@ -1,4 +1,4 @@
-﻿{% load static %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -101,30 +101,55 @@
 
         @media (max-width: 700px) {
 
+            html,
+            body {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            .homepage {
+                width: 100%;
+                min-height: 100vh;
+                display: block;
+            }
+
             .homepage-image {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
                 border-radius: 0;
                 box-shadow: none;
+                overflow: hidden;
+            }
+
+            .homepage-image img {
+                display: block;
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                object-fit: contain;
             }
 
             .staff-login-link {
-                left: 72%;
-                top: 2%;
-                width: 11%;
-                height: 6%;
+                left: 72.5%;
+                top: 2.5%;
+                width: 9.5%;
+                height: 5.5%;
             }
 
             .platform-login-link {
                 left: 83%;
-                top: 2%;
-                width: 12%;
-                height: 6%;
+                top: 2.5%;
+                width: 10.5%;
+                height: 5.5%;
             }
 
             .hero-login-link {
                 left: 5%;
                 top: 46%;
-                width: 18%;
-                height: 8%;
+                width: 14%;
+                height: 7%;
             }
 
         }
