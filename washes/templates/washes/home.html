@@ -22,21 +22,32 @@
 
     <style>
 
+        * {
+            box-sizing: border-box;
+        }
+
         html,
         body {
             margin: 0;
             padding: 0;
+            width: 100%;
             background: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
-        .homepage {
+
+        /* =====================================================
+           DESKTOP HOMEPAGE
+        ===================================================== */
+
+        .desktop-homepage {
             width: 100%;
             display: flex;
             justify-content: center;
             background: #ffffff;
         }
 
-        .homepage-image {
+        .desktop-homepage-image {
             position: relative;
             width: 100%;
             max-width: 1648px;
@@ -46,16 +57,11 @@
             box-shadow: 0 20px 50px rgba(0, 20, 50, 0.16);
         }
 
-        .homepage-image img {
+        .desktop-homepage-image > img {
             display: block;
             width: 100%;
             height: auto;
         }
-
-
-        /* =====================================================
-           INVISIBLE FUNCTIONAL BUTTONS
-        ===================================================== */
 
         .home-link {
             position: absolute;
@@ -64,9 +70,6 @@
             background: transparent;
         }
 
-        /*
-         * Staff Login in the supplied image
-         */
         .staff-login-link {
             left: 72.5%;
             top: 2.5%;
@@ -74,9 +77,6 @@
             height: 5.5%;
         }
 
-        /*
-         * Platform Admin in the supplied image
-         */
         .platform-login-link {
             left: 83%;
             top: 2.5%;
@@ -84,9 +84,6 @@
             height: 5.5%;
         }
 
-        /*
-         * Hero Staff Login button
-         */
         .hero-login-link {
             left: 5%;
             top: 46%;
@@ -96,60 +93,286 @@
 
 
         /* =====================================================
-           MOBILE
+           MOBILE HOMEPAGE
         ===================================================== */
+
+        .mobile-homepage {
+            display: none;
+        }
+
 
         @media (max-width: 700px) {
 
-            html,
             body {
-                width: 100%;
-                max-width: 100%;
                 overflow-x: hidden;
             }
 
-            .homepage {
+            .desktop-homepage {
+                display: none;
+            }
+
+            .mobile-homepage {
+                display: block;
                 width: 100%;
                 min-height: 100vh;
-                display: block;
+                background: #ffffff;
+                color: #102a43;
             }
 
-            .homepage-image {
-                width: 100%;
-                max-width: 100%;
-                margin: 0;
-                border-radius: 0;
-                box-shadow: none;
-                overflow: hidden;
+
+            /* HEADER */
+
+            .mobile-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 12px 18px;
+                background: #ffffff;
+                border-bottom: 1px solid #e7edf4;
             }
 
-            .homepage-image img {
-                display: block;
-                width: 100%;
-                max-width: 100%;
+            .mobile-logo {
+                width: 92px;
                 height: auto;
-                object-fit: contain;
+                display: block;
             }
 
-            .staff-login-link {
-                left: 72.5%;
-                top: 2.5%;
-                width: 9.5%;
-                height: 5.5%;
+            .mobile-admin-link {
+                color: #3858e9;
+                font-size: 12px;
+                font-weight: 700;
+                text-decoration: none;
+                border: 1px solid #d9e0ec;
+                border-radius: 8px;
+                padding: 9px 11px;
+                white-space: nowrap;
             }
 
-            .platform-login-link {
-                left: 83%;
-                top: 2.5%;
-                width: 10.5%;
-                height: 5.5%;
+
+            /* HERO */
+
+            .mobile-hero {
+                position: relative;
+                overflow: hidden;
+                padding: 44px 22px 48px;
+                color: #ffffff;
+                background:
+                    linear-gradient(
+                        135deg,
+                        #09233d 0%,
+                        #0c3559 55%,
+                        #075b8c 100%
+                    );
             }
 
-            .hero-login-link {
-                left: 5%;
-                top: 46%;
-                width: 14%;
-                height: 7%;
+            .mobile-eyebrow {
+                display: inline-block;
+                margin-bottom: 15px;
+                font-size: 11px;
+                font-weight: 800;
+                letter-spacing: 1.7px;
+                text-transform: uppercase;
+                color: #65d6ff;
+            }
+
+            .mobile-hero h1 {
+                margin: 0;
+                max-width: 330px;
+                font-size: 38px;
+                line-height: 1.04;
+                letter-spacing: -1.2px;
+            }
+
+            .mobile-hero h1 span {
+                color: #2ec5ff;
+            }
+
+            .mobile-hero p {
+                margin: 20px 0 0;
+                max-width: 340px;
+                color: #d6e5f2;
+                font-size: 15px;
+                line-height: 1.6;
+            }
+
+            .mobile-primary-button {
+                display: inline-block;
+                margin-top: 26px;
+                padding: 14px 24px;
+                border-radius: 9px;
+                background: #4f46f5;
+                color: #ffffff;
+                font-size: 14px;
+                font-weight: 800;
+                text-decoration: none;
+                box-shadow: 0 10px 25px rgba(79, 70, 245, 0.3);
+            }
+
+
+            /* BENEFITS */
+
+            .mobile-benefits {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 18px;
+                background: #f4f8fc;
+            }
+
+            .mobile-benefit {
+                padding: 16px 12px;
+                background: #ffffff;
+                border: 1px solid #e5edf5;
+                border-radius: 12px;
+                text-align: center;
+            }
+
+            .mobile-benefit strong {
+                display: block;
+                margin-bottom: 5px;
+                color: #102a43;
+                font-size: 13px;
+            }
+
+            .mobile-benefit span {
+                color: #66788a;
+                font-size: 11px;
+                line-height: 1.4;
+            }
+
+
+            /* FEATURES */
+
+            .mobile-features {
+                padding: 38px 18px 42px;
+            }
+
+            .mobile-section-label {
+                margin: 0 0 7px;
+                text-align: center;
+                color: #4169e1;
+                font-size: 10px;
+                font-weight: 800;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+            }
+
+            .mobile-features h2 {
+                margin: 0;
+                text-align: center;
+                color: #102a43;
+                font-size: 26px;
+                line-height: 1.15;
+            }
+
+            .mobile-section-intro {
+                max-width: 340px;
+                margin: 12px auto 25px;
+                text-align: center;
+                color: #718096;
+                font-size: 13px;
+                line-height: 1.6;
+            }
+
+            .mobile-feature-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .mobile-feature-card {
+                display: flex;
+                align-items: flex-start;
+                gap: 14px;
+                padding: 18px;
+                background: #ffffff;
+                border: 1px solid #e4ebf3;
+                border-radius: 13px;
+                box-shadow: 0 6px 18px rgba(16, 42, 67, 0.06);
+            }
+
+            .mobile-feature-icon {
+                flex: 0 0 42px;
+                width: 42px;
+                height: 42px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: #eaf6ff;
+                font-size: 21px;
+            }
+
+            .mobile-feature-card h3 {
+                margin: 1px 0 5px;
+                color: #102a43;
+                font-size: 15px;
+            }
+
+            .mobile-feature-card p {
+                margin: 0;
+                color: #718096;
+                font-size: 12px;
+                line-height: 1.5;
+            }
+
+
+            /* CTA */
+
+            .mobile-cta {
+                margin: 0 18px 38px;
+                padding: 28px 20px;
+                border-radius: 16px;
+                text-align: center;
+                color: #ffffff;
+                background: #092b49;
+            }
+
+            .mobile-cta h2 {
+                margin: 0 0 8px;
+                font-size: 22px;
+            }
+
+            .mobile-cta p {
+                margin: 0 auto;
+                max-width: 300px;
+                color: #c7d9e8;
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            .mobile-cta a {
+                display: block;
+                margin-top: 19px;
+                padding: 14px 18px;
+                border-radius: 9px;
+                background: #4f46f5;
+                color: #ffffff;
+                font-size: 14px;
+                font-weight: 800;
+                text-decoration: none;
+            }
+
+
+            /* FOOTER */
+
+            .mobile-footer {
+                padding: 22px 18px 28px;
+                text-align: center;
+                background: #061c30;
+                color: #ffffff;
+            }
+
+            .mobile-footer img {
+                width: 100px;
+                height: auto;
+            }
+
+            .mobile-footer p {
+                margin: 8px 0 0;
+                color: #91a8ba;
+                font-size: 11px;
             }
 
         }
@@ -162,19 +385,18 @@
 <body>
 
 
-<div class="homepage">
+<!-- =====================================================
+     DESKTOP VERSION
+===================================================== -->
 
-    <div class="homepage-image">
+<div class="desktop-homepage">
+
+    <div class="desktop-homepage-image">
 
         <img
             src="{% static 'washes/images/carwash-homepage.png' %}"
             alt="CarWash Connect"
         >
-
-
-        <!-- ===============================================
-             STAFF LOGIN
-        ================================================ -->
 
         <a
             href="{% url 'staff_login' %}"
@@ -183,22 +405,12 @@
             title="Staff Login"
         ></a>
 
-
-        <!-- ===============================================
-             PLATFORM ADMIN
-        ================================================ -->
-
         <a
             href="{% url 'platform_login' %}"
             class="home-link platform-login-link"
             aria-label="Platform Admin"
             title="Platform Admin"
         ></a>
-
-
-        <!-- ===============================================
-             HERO STAFF LOGIN
-        ================================================ -->
 
         <a
             href="{% url 'staff_login' %}"
@@ -208,6 +420,197 @@
         ></a>
 
     </div>
+
+</div>
+
+
+<!-- =====================================================
+     MOBILE VERSION
+===================================================== -->
+
+<div class="mobile-homepage">
+
+
+    <header class="mobile-header">
+
+        <img
+            src="{% static 'washes/images/carwash-connect-logo.png' %}"
+            alt="CarWash Connect"
+            class="mobile-logo"
+        >
+
+        <a
+            href="{% url 'platform_login' %}"
+            class="mobile-admin-link"
+        >
+            Platform Admin
+        </a>
+
+    </header>
+
+
+    <section class="mobile-hero">
+
+        <span class="mobile-eyebrow">
+            Car Wash Management Platform
+        </span>
+
+        <h1>
+            Smarter Car Wash Management
+            <span>for a Cleaner Tomorrow</span>
+        </h1>
+
+        <p>
+            Manage vehicles, staff, services, payments and reports
+            from one simple platform.
+        </p>
+
+        <a
+            href="{% url 'staff_login' %}"
+            class="mobile-primary-button"
+        >
+            Staff Login
+        </a>
+
+    </section>
+
+
+    <section class="mobile-benefits">
+
+        <div class="mobile-benefit">
+            <strong>Save Time</strong>
+            <span>Work more efficiently</span>
+        </div>
+
+        <div class="mobile-benefit">
+            <strong>Better Control</strong>
+            <span>Keep operations organised</span>
+        </div>
+
+        <div class="mobile-benefit">
+            <strong>Track Growth</strong>
+            <span>Monitor revenue and activity</span>
+        </div>
+
+        <div class="mobile-benefit">
+            <strong>Go Digital</strong>
+            <span>Build a smarter business</span>
+        </div>
+
+    </section>
+
+
+    <section class="mobile-features">
+
+        <p class="mobile-section-label">
+            Everything in one place
+        </p>
+
+        <h2>
+            Simple tools for everyday car wash operations
+        </h2>
+
+        <p class="mobile-section-intro">
+            From vehicle check-in to payment and reporting,
+            CarWash Connect helps your team work smarter.
+        </p>
+
+
+        <div class="mobile-feature-grid">
+
+            <div class="mobile-feature-card">
+
+                <div class="mobile-feature-icon">🚙</div>
+
+                <div>
+                    <h3>Vehicle Registration</h3>
+                    <p>
+                        Capture customer and vehicle details quickly
+                        and add them directly to the wash queue.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="mobile-feature-card">
+
+                <div class="mobile-feature-icon">👥</div>
+
+                <div>
+                    <h3>Live Wash Queue</h3>
+                    <p>
+                        Track vehicles from waiting to washing,
+                        finishing, ready and collected.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="mobile-feature-card">
+
+                <div class="mobile-feature-icon">💬</div>
+
+                <div>
+                    <h3>Customer Notifications</h3>
+                    <p>
+                        Notify customers through WhatsApp when
+                        their vehicle is ready.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="mobile-feature-card">
+
+                <div class="mobile-feature-icon">📊</div>
+
+                <div>
+                    <h3>Payments & Reports</h3>
+                    <p>
+                        Monitor payments, daily activity and
+                        monthly revenue from one dashboard.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="mobile-cta">
+
+        <h2>Manage your car wash smarter.</h2>
+
+        <p>
+            Access your CarWash Connect dashboard and manage
+            today's vehicles and operations.
+        </p>
+
+        <a href="{% url 'staff_login' %}">
+            Staff Login
+        </a>
+
+    </section>
+
+
+    <footer class="mobile-footer">
+
+        <img
+            src="{% static 'washes/images/carwash-connect-logo.png' %}"
+            alt="CarWash Connect"
+        >
+
+        <p>
+            Wash • Manage • Grow
+        </p>
+
+    </footer>
+
 
 </div>
 
