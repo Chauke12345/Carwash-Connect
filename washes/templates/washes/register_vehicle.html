@@ -45,7 +45,7 @@
                     href="{% url 'dashboard' %}"
                     class="btn btn-logout"
                 >
-                    â† Back to Dashboard
+                    &larr; Back to Dashboard
                 </a>
 
             </div>
@@ -304,6 +304,12 @@
     </main>
 
 
+
+<div
+    id="returning-vehicle-info"
+    style="display:none; margin: 0 auto 20px; max-width: 700px;"
+></div>
+
 {{ service_prices|json_script:"service-price-data" }}
 
 <script>
@@ -380,6 +386,128 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const registrationInput =
+        document.getElementById("id_registration_number");
+
+    const customerNameInput =
+        document.getElementById("id_customer_name");
+
+    const phoneInput =
+        document.getElementById("id_phone_number");
+
+    const makeInput =
+        document.getElementById("id_vehicle_make");
+
+    const modelInput =
+        document.getElementById("id_vehicle_model");
+
+    const typeInput =
+        document.getElementById("id_vehicle_type");
+
+    const sizeInput =
+        document.getElementById("id_vehicle_size");
+
+    const returningInfo =
+        document.getElementById("returning-vehicle-info");
+
+    if (!registrationInput || !returningInfo) {
+        return;
+    }
+
+    async function lookupVehicle() {
+
+        const registration =
+            registrationInput.value.trim();
+
+        returningInfo.style.display = "none";
+        returningInfo.innerHTML = "";
+
+        if (!registration) {
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                "{% url 'vehicle_lookup' %}?registration=" +
+                encodeURIComponent(registration)
+            );
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+
+            if (!data.found) {
+                return;
+            }
+
+            customerNameInput.value =
+                data.customer_name || "";
+
+            phoneInput.value =
+                data.phone_number || "";
+
+            makeInput.value =
+                data.vehicle_make || "";
+
+            modelInput.value =
+                data.vehicle_model || "";
+
+            typeInput.value =
+                data.vehicle_type || "";
+
+            sizeInput.value =
+                data.vehicle_size || "";
+
+            sizeInput.dispatchEvent(
+                new Event("change")
+            );
+
+            returningInfo.innerHTML =
+                "<div style='padding:16px; border:1px solid #198754; border-radius:8px;'>" +
+                "<strong>Returning Vehicle</strong><br>" +
+                data.registration_number +
+                " - " +
+                (data.vehicle_make || "") +
+                " " +
+                (data.vehicle_model || "") +
+                "<br>Previous completed washes: <strong>" +
+                data.previous_visits +
+                "</strong>" +
+                "<br>This will be visit <strong>#" +
+                data.next_visit +
+                "</strong>" +
+                "</div>";
+
+            returningInfo.style.display = "block";
+
+        } catch (error) {
+            console.error(
+                "Vehicle lookup failed:",
+                error
+            );
+        }
+    }
+
+    registrationInput.addEventListener(
+        "change",
+        lookupVehicle
+    );
+
+    registrationInput.addEventListener(
+        "blur",
+        lookupVehicle
+    );
+
+});
+</script>
+
 </body>
 
 </html>

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -399,6 +400,67 @@ def dashboard(request):
 
 
 @login_required(login_url="staff_login")
+def vehicle_lookup(request):
+    try:
+        staff_profile = request.user.carwash_staff_profile
+    except StaffProfile.DoesNotExist:
+        return JsonResponse(
+            {"found": False, "error": "Staff profile not found."},
+            status=403
+        )
+
+    car_wash = staff_profile.car_wash
+
+    registration_number = (
+        request.GET.get("registration", "")
+        .strip()
+        .upper()
+    )
+
+    if not registration_number:
+        return JsonResponse({"found": False})
+
+    vehicle = (
+        Vehicle.objects
+        .filter(
+            customer__car_wash=car_wash,
+            registration_number__iexact=registration_number
+        )
+        .select_related("customer")
+        .first()
+    )
+
+    if not vehicle:
+        return JsonResponse({
+            "found": False,
+            "registration_number": registration_number,
+        })
+
+    previous_visits = (
+        WashJob.objects
+        .filter(
+            car_wash=car_wash,
+            vehicle=vehicle,
+            status="collected"
+        )
+        .count()
+    )
+
+    return JsonResponse({
+        "found": True,
+        "customer_name": vehicle.customer.name,
+        "phone_number": vehicle.customer.phone_number,
+        "registration_number": vehicle.registration_number,
+        "vehicle_make": vehicle.make,
+        "vehicle_model": vehicle.model,
+        "vehicle_type": vehicle.vehicle_type,
+        "vehicle_size": vehicle.vehicle_size,
+        "previous_visits": previous_visits,
+        "next_visit": previous_visits + 1,
+    })
+
+
+@login_required(login_url="staff_login")
 def register_vehicle(request):
 
     try:
@@ -472,33 +534,7 @@ def register_vehicle(request):
             )
 
             # =================================================
-            # FIND OR CREATE CUSTOMER
-            # =================================================
-
-            customer, customer_created = (
-                Customer.objects.get_or_create(
-                    car_wash=car_wash,
-                    phone_number=phone_number,
-                    defaults={
-                        "name": customer_name,
-                    }
-                )
-            )
-
-            if (
-                not customer_created
-                and customer.name != customer_name
-            ):
-                customer.name = customer_name
-
-                customer.save(
-                    update_fields=[
-                        "name"
-                    ]
-                )
-
-            # =================================================
-            # VEHICLE DETAILS
+            # FIND EXISTING VEHICLE BY REGISTRATION FIRST
             # =================================================
 
             registration_number = (
@@ -506,6 +542,65 @@ def register_vehicle(request):
                 .strip()
                 .upper()
             )
+
+            existing_vehicle = (
+                Vehicle.objects
+                .filter(
+                    customer__car_wash=car_wash,
+                    registration_number__iexact=registration_number
+                )
+                .select_related("customer")
+                .first()
+            )
+
+            # =================================================
+            # RETURNING VEHICLE
+            # =================================================
+
+            if existing_vehicle:
+                vehicle = existing_vehicle
+                customer = vehicle.customer
+
+                customer.name = customer_name
+                customer.phone_number = phone_number
+
+                customer.save(
+                    update_fields=[
+                        "name",
+                        "phone_number",
+                    ]
+                )
+
+            # =================================================
+            # NEW VEHICLE / CUSTOMER
+            # =================================================
+
+            else:
+                customer, customer_created = (
+                    Customer.objects.get_or_create(
+                        car_wash=car_wash,
+                        phone_number=phone_number,
+                        defaults={
+                            "name": customer_name,
+                        }
+                    )
+                )
+
+                if (
+                    not customer_created
+                    and customer.name != customer_name
+                ):
+                    customer.name = customer_name
+
+                    customer.save(
+                        update_fields=[
+                            "name"
+                        ]
+                    )
+
+            # =================================================
+            # VEHICLE DETAILS
+            # =================================================
 
             vehicle_make = (
                 form.cleaned_data["vehicle_make"]
@@ -526,28 +621,10 @@ def register_vehicle(request):
             )
 
             # =================================================
-            # FIND OR CREATE VEHICLE
+            # CREATE OR UPDATE VEHICLE
             # =================================================
 
-            vehicle, vehicle_created = (
-                Vehicle.objects.get_or_create(
-                    customer=customer,
-                    registration_number=registration_number,
-                    defaults={
-                        "make": vehicle_make,
-                        "model": vehicle_model,
-                        "vehicle_type": vehicle_type,
-                        "vehicle_size": vehicle_size,
-                    }
-                )
-            )
-
-            # =================================================
-            # UPDATE EXISTING VEHICLE
-            # =================================================
-
-            if not vehicle_created:
-
+            if existing_vehicle:
                 vehicle.make = vehicle_make
                 vehicle.model = vehicle_model
                 vehicle.vehicle_type = vehicle_type
@@ -560,6 +637,16 @@ def register_vehicle(request):
                         "vehicle_type",
                         "vehicle_size",
                     ]
+                )
+
+            else:
+                vehicle = Vehicle.objects.create(
+                    customer=customer,
+                    registration_number=registration_number,
+                    make=vehicle_make,
+                    model=vehicle_model,
+                    vehicle_type=vehicle_type,
+                    vehicle_size=vehicle_size,
                 )
 
             # =================================================
