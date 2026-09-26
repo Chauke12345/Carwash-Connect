@@ -1,0 +1,769 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Monthly Report | {{ car_wash.name }}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'washes/css/style.css' %}"
+    >
+
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <header class="topbar">
+
+        <div>
+
+            <h1>
+                {{ car_wash.name }}
+            </h1>
+
+            <p>
+                CarWash Connect — Monthly Report
+            </p>
+
+        </div>
+
+        <div>
+
+            <!-- SMALL HOME / DASHBOARD BUTTON -->
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="btn btn-secondary"
+                title="Back to Dashboard"
+            >
+                ⌂ Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="dashboard-container">
+
+
+        <!-- =================================================
+             REPORT HEADING
+        ================================================== -->
+
+        <div class="dashboard-heading">
+
+            <div>
+
+                <h2>
+                    Monthly Report
+                </h2>
+
+                <p>
+                    {{ month_name }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MONTH SELECTOR
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Select Month
+                    </h2>
+
+                    <p>
+                        View another monthly report.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="GET"
+                style="
+                    display:grid;
+                    grid-template-columns:1fr 1fr auto;
+                    gap:12px;
+                    align-items:end;
+                "
+            >
+
+                <div>
+
+                    <label for="month">
+                        Month
+                    </label>
+
+                    <select
+                        name="month"
+                        id="month"
+                    >
+
+                        <option value="1" {% if selected_month == 1 %}selected{% endif %}>
+                            January
+                        </option>
+
+                        <option value="2" {% if selected_month == 2 %}selected{% endif %}>
+                            February
+                        </option>
+
+                        <option value="3" {% if selected_month == 3 %}selected{% endif %}>
+                            March
+                        </option>
+
+                        <option value="4" {% if selected_month == 4 %}selected{% endif %}>
+                            April
+                        </option>
+
+                        <option value="5" {% if selected_month == 5 %}selected{% endif %}>
+                            May
+                        </option>
+
+                        <option value="6" {% if selected_month == 6 %}selected{% endif %}>
+                            June
+                        </option>
+
+                        <option value="7" {% if selected_month == 7 %}selected{% endif %}>
+                            July
+                        </option>
+
+                        <option value="8" {% if selected_month == 8 %}selected{% endif %}>
+                            August
+                        </option>
+
+                        <option value="9" {% if selected_month == 9 %}selected{% endif %}>
+                            September
+                        </option>
+
+                        <option value="10" {% if selected_month == 10 %}selected{% endif %}>
+                            October
+                        </option>
+
+                        <option value="11" {% if selected_month == 11 %}selected{% endif %}>
+                            November
+                        </option>
+
+                        <option value="12" {% if selected_month == 12 %}selected{% endif %}>
+                            December
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label for="year">
+                        Year
+                    </label>
+
+                    <input
+                        type="number"
+                        name="year"
+                        id="year"
+                        value="{{ selected_year }}"
+                        min="2026"
+                        max="2100"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    View Report
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- =================================================
+             MONTH SUMMARY
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        {{ month_name }} Summary
+                    </h2>
+
+                    <p>
+                        Monthly car wash activity.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="report-summary-grid">
+
+                <div class="report-summary-card">
+
+                    <span>
+                        Vehicles
+                    </span>
+
+                    <strong>
+                        {{ total_vehicles }}
+                    </strong>
+
+                </div>
+
+
+                <div class="report-summary-card">
+
+                    <span>
+                        Completed
+                    </span>
+
+                    <strong>
+                        {{ completed_count }}
+                    </strong>
+
+                </div>
+
+
+                <div class="report-summary-card revenue-highlight">
+
+                    <span>
+                        Revenue
+                    </span>
+
+                    <strong>
+                        R{{ total_revenue|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="report-summary-card">
+
+                    <span>
+                        Average Transaction
+                    </span>
+
+                    <strong>
+                        R{{ average_transaction|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAYMENT BREAKDOWN
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Payment Breakdown
+                    </h2>
+
+                    <p>
+                        Paid revenue by payment method.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="revenue-grid">
+
+                <div class="revenue-card">
+
+                    <span>Cash</span>
+
+                    <strong>
+                        R{{ cash_revenue|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="revenue-card">
+
+                    <span>Card</span>
+
+                    <strong>
+                        R{{ card_revenue|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="revenue-card">
+
+                    <span>EFT</span>
+
+                    <strong>
+                        R{{ eft_revenue|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="revenue-card">
+
+                    <span>Other</span>
+
+                    <strong>
+                        R{{ other_revenue|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SERVICES
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Services
+                    </h2>
+
+                    <p>
+                        Completed washes by service.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Service
+                            </th>
+
+                            <th>
+                                Completed
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in service_breakdown %}
+
+                            <tr>
+
+                                <td>
+                                    {{ item.service__name }}
+                                </td>
+
+                                <td>
+                                    {{ item.total }}
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td
+                                    colspan="2"
+                                    class="report-empty"
+                                >
+                                    No completed services for this month.
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             VEHICLE SIZES
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Vehicle Sizes
+                    </h2>
+
+                    <p>
+                        Completed washes by vehicle size.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Vehicle Size
+                            </th>
+
+                            <th>
+                                Completed
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in vehicle_size_breakdown %}
+
+                            <tr>
+
+                                <td>
+                                    {{ item.vehicle__vehicle_size|title }}
+                                </td>
+
+                                <td>
+                                    {{ item.total }}
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td
+                                    colspan="2"
+                                    class="report-empty"
+                                >
+                                    No vehicle data for this month.
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PERSONNEL
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Personnel Activity
+                    </h2>
+
+                    <p>
+                        Completed jobs assigned to each team member.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Personnel
+                            </th>
+
+                            <th>
+                                Role
+                            </th>
+
+                            <th>
+                                Completed Jobs
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for person in personnel_breakdown %}
+
+                            <tr>
+
+                                <td>
+                                    {{ person.name }}
+                                </td>
+
+                                <td>
+                                    {{ person.get_role_display }}
+                                </td>
+
+                                <td>
+                                    {{ person.completed_jobs_count }}
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td
+                                    colspan="3"
+                                    class="report-empty"
+                                >
+                                    No personnel available.
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLETED TRANSACTIONS
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Completed Transactions
+                    </h2>
+
+                    <p>
+                        Completed vehicles for {{ month_name }}.
+                    </p>
+
+                </div>
+
+                <span>
+                    {{ completed_count }} Completed
+                </span>
+
+            </div>
+
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Registration
+                            </th>
+
+                            <th>
+                                Service
+                            </th>
+
+                            <th>
+                                Size
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for job in completed_jobs %}
+
+                            <tr>
+
+                                <td>
+                                    {{ job.created_at|date:"d M Y" }}
+                                </td>
+
+                                <td>
+                                    {{ job.vehicle.registration_number }}
+                                </td>
+
+                                <td>
+                                    {{ job.service.name }}
+                                </td>
+
+                                <td>
+                                    {{ job.vehicle.get_vehicle_size_display }}
+                                </td>
+
+                                <td>
+                                    {{ job.get_payment_method_display }}
+                                </td>
+
+                                <td>
+                                    R{{ job.amount|floatformat:2 }}
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td
+                                    colspan="6"
+                                    class="report-empty"
+                                >
+                                    No completed transactions for this month.
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             BOTTOM DASHBOARD BUTTON
+        ================================================== -->
+
+        <div style="margin-top:20px;">
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="btn btn-primary"
+            >
+                ⌂ Back to Dashboard
+            </a>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Staff Login | CarWash Connect</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'washes/css/style.css' %}"
+    >
+</head>
+
+<body class="login-page">
+
+    <main class="login-container">
+
+        <div class="login-card">
+
+            <!-- BRAND -->
+
+            <div class="login-brand">
+
+                <h1>CarWash Connect</h1>
+
+                <p>
+                    Car wash operations made simple.
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN HEADING -->
+
+            <div class="login-heading">
+
+                <h2>Staff Login</h2>
+
+                <p>
+                    Sign in to manage your car wash operations.
+                </p>
+
+            </div>
+
+
+            <!-- ERROR MESSAGE -->
+
+            {% if error %}
+
+                <div class="login-error">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- LOGIN FORM -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="login-field">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        autocomplete="username"
+                        placeholder="Enter your username"
+                        autofocus
+                    >
+
+                </div>
+
+
+                <div class="login-field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary login-button"
+                >
+                    Sign In
+                </button>
+
+            </form>
+
+
+            <!-- BACK LINK -->
+
+            <div class="login-footer">
+
+                <a href="{% url 'home' %}">
+                    ← Back to CarWash Connect
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,533 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Platform Billing | CarWash Connect</title>
+
+    <!-- MAIN STYLESHEET -->
+    <link
+        rel="stylesheet"
+        href="{% static 'washes/css/style.css' %}"
+    >
+
+    <!-- CARWASH CONNECT WEB APP -->
+    <link
+        rel="manifest"
+        href="{% static 'washes/manifest.json' %}"
+    >
+
+    <!-- BROWSER / APP ICON -->
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="{% static 'washes/images/carwash-icon-192.png' %}"
+    >
+
+    <!-- IPHONE / IPAD HOME SCREEN ICON -->
+    <link
+        rel="apple-touch-icon"
+        href="{% static 'washes/images/carwash-icon-192.png' %}"
+    >
+
+    <!-- MOBILE APP APPEARANCE -->
+    <meta name="theme-color" content="#0b1f33">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="CarWash Connect">
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="dashboard-header">
+
+        <div class="header-inner">
+
+            <div class="brand">
+                <h1>CarWash Connect</h1>
+                <p>Edvance Tech Platform Administration</p>
+            </div>
+
+            <div class="header-user">
+
+                <span>
+                    Platform Admin:
+                    <strong>{{ request.user.username }}</strong>
+                </span>
+
+                <a
+                    href="{% url 'staff_logout' %}"
+                    class="btn btn-logout"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="dashboard-container">
+
+        <!-- =================================================
+             PAGE TITLE
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>Platform Billing & Monitoring</h2>
+
+                    <p class="report-date">
+                        {{ report_date|date:"F Y" }}
+                    </p>
+
+                    <p class="form-description">
+                        Monitor connected car washes, daily activity,
+                        and monthly platform usage billing.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PLATFORM ACTIVITY - TODAY
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <h2>Platform Activity</h2>
+
+            <div class="platform-summary-grid">
+
+                <div class="platform-stat-card">
+
+                    <span>
+                        Connected Car Washes
+                    </span>
+
+                    <strong>
+                        {{ total_car_washes }}
+                    </strong>
+
+                </div>
+
+
+                <div class="platform-stat-card">
+
+                    <span>
+                        Active Car Washes
+                    </span>
+
+                    <strong>
+                        {{ active_car_washes }}
+                    </strong>
+
+                </div>
+
+
+                <div class="platform-stat-card">
+
+                    <span>
+                        Vehicles Today
+                    </span>
+
+                    <strong>
+                        {{ total_jobs }}
+                    </strong>
+
+                </div>
+
+
+                <div class="platform-stat-card">
+
+                    <span>
+                        Completed Today
+                    </span>
+
+                    <strong>
+                        {{ completed_jobs }}
+                    </strong>
+
+                </div>
+
+
+                <div class="platform-stat-card">
+
+                    <span>
+                        Active Queue
+                    </span>
+
+                    <strong>
+                        {{ active_jobs }}
+                    </strong>
+
+                </div>
+
+
+                <div class="platform-stat-card">
+
+                    <span>
+                        Car Wash Transaction Value
+                    </span>
+
+                    <strong>
+                        R{{ total_transaction_value|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             EDVANCE TECH BILLING
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>Edvance Tech Billing</h2>
+
+                    <p class="form-description">
+    Fixed monthly subscription fees for active connected car washes
+    during the current month.
+</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="revenue-grid">
+
+                <!-- TOTAL PLATFORM FEES GENERATED -->
+
+                <div class="revenue-card">
+
+                    <span>
+                        Platform Fees Earned
+                    </span>
+
+                    <strong>
+                        R{{ expected_invoice_revenue|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <!-- AMOUNT PAID TO EDVANCE TECH -->
+
+                <div class="revenue-card">
+
+                    <span>
+                        Paid to Edvance Tech
+                    </span>
+
+                    <strong>
+                        R{{ paid_invoice_revenue|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <!-- CURRENT AMOUNT DUE -->
+
+                <div class="revenue-card">
+
+                    <span>
+                        Platform Fees Due
+                    </span>
+
+                    <strong>
+                        R{{ outstanding_invoice_revenue|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SYSTEM USAGE MONITORING
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>System Usage Monitoring</h2>
+
+                    <p class="form-description">
+                        Monitor how each connected car wash is using
+                        CarWash Connect and view monthly platform billing.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="monitoring-grid">
+
+                {% for item in car_wash_data %}
+
+                    <article class="monitoring-card">
+
+                        <!-- CAR WASH INFORMATION -->
+
+                        <div class="monitoring-card-header">
+
+                            <div class="car-wash-title">
+
+                                <h3>
+                                    {{ item.car_wash.name }}
+                                </h3>
+
+                                <p>
+                                    {{ item.car_wash.location }}
+                                </p>
+
+                            </div>
+
+                            {% if item.car_wash.is_active %}
+
+                                <span class="monitoring-status active">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="monitoring-status inactive">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- =====================================
+                             TODAY'S ACTIVITY
+                        ====================================== -->
+
+                        <div class="monitoring-stats">
+
+                            <div>
+                                <span>Vehicles Today</span>
+
+                                <strong>
+                                    {{ item.total_jobs }}
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>Completed Today</span>
+
+                                <strong>
+                                    {{ item.completed_jobs }}
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>Active Queue</span>
+
+                                <strong>
+                                    {{ item.active_jobs }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             LAST SYSTEM ACTIVITY
+                        ====================================== -->
+
+                        <div class="monitoring-revenue">
+
+                            <span>
+                                Last System Activity
+                            </span>
+
+                            <strong>
+                                {% if item.last_activity %}
+                                    {{ item.last_activity|date:"d M Y, H:i" }}
+                                {% else %}
+                                    Never Used
+                                {% endif %}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             MONTHLY SYSTEM USAGE
+                        ====================================== -->
+
+                        <div class="billing-summary">
+
+                            <div>
+                                <span>
+                                    Vehicles This Month
+                                </span>
+
+                                <strong>
+                                    {{ item.monthly_jobs }}
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    Completed This Month
+                                </span>
+
+                                <strong>
+                                    {{ item.monthly_completed_jobs }}
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    Monthly Transaction Value
+                                </span>
+
+                                <strong>
+                                    R{{ item.monthly_transaction_value|floatformat:2 }}
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    Active Staff
+                                </span>
+
+                                <strong>
+                                    {{ item.staff_count }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             EDVANCE TECH BILLING
+                        ====================================== -->
+
+                        <div class="billing-summary">
+
+                            <div>
+                                <span>
+                                    Monthly Subscription
+                                </span>
+
+                                <strong>
+                                    R{{ item.monthly_fee|floatformat:2 }}
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    Billing Model
+                                </span>
+
+                                <strong>
+                                    Fixed Monthly
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    Paid to Edvance Tech
+                                </span>
+
+                                <strong>
+                                    R{{ item.platform_fee_paid|floatformat:2 }}
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    Amount Due
+                                </span>
+
+                                <strong>
+                                    R{{ item.platform_fee_due|floatformat:2 }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             INSPECT CAR WASH
+                        ====================================== -->
+
+                        <div class="monitoring-actions">
+
+                            <a
+                                href="{% url 'platform_car_wash_detail' item.car_wash.id %}"
+                                class="btn btn-secondary"
+                            >
+                                View Car Wash
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% empty %}
+
+                    <div class="empty-state">
+                        No car washes registered.
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
