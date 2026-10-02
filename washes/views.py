@@ -820,17 +820,20 @@ def update_job_status(request, job_id):
             "washing": "finishing",
             "finishing": "ready",
         }
+
         next_status = status_flow.get(job.status)
 
         if next_status:
             job.status = next_status
             update_fields = ["status", "updated_at"]
 
+            # START WASH
             if next_status == "washing" and not job.started_at:
                 job.started_at = timezone.now()
                 update_fields.append("started_at")
 
-            if next_status == "ready" and not job.completed_at:
+            # FINISH WASH
+            if next_status == "finishing" and not job.completed_at:
                 job.completed_at = timezone.now()
                 update_fields.append("completed_at")
 

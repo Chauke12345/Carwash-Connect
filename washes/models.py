@@ -1,4 +1,4 @@
-from django.db import models
+﻿from django.db import models
 from django.contrib.auth.models import User
 
 
@@ -401,7 +401,7 @@ class WashJob(models.Model):
         ("registered", "Registered"),
         ("waiting", "Waiting"),
         ("washing", "Washing"),
-        ("finishing", "Drying / Finishing"),
+        ("finishing", "Finished"),
         ("ready", "Ready"),
         ("collected", "Collected"),
         ("cancelled", "Cancelled"),
@@ -570,3 +570,4 @@ class PlatformPayment(models.Model):
             f"{self.billing_year}/{self.billing_month} - "
             f"R{self.amount}"
         )
+
